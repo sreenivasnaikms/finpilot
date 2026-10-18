@@ -89,10 +89,10 @@ def run_self_evaluation() -> Dict[str, Any]:
     detected_anomalies = analyzer.analyze_patterns(predicted_results)
 
     # Check for seeded anomalies:
-    # Anomaly 1: Dormant gym membership (Equinox)
+    # Anomaly 1: Dormant gym membership (Cult.fit / Equinox)
     found_gym_anomaly = any(
         a.get("anomaly_type") == "GHOST_SUBSCRIPTION" and 
-        any("equinox" in m.lower() for m in a.get("involved_merchants", []))
+        any("cult" in m.lower() or "equinox" in m.lower() for m in a.get("involved_merchants", []))
         for a in detected_anomalies
     )
     # Anomaly 2: Subscription Sprawl / Streaming
@@ -118,7 +118,7 @@ def run_self_evaluation() -> Dict[str, Any]:
     # 3. Evaluate Forecasting Agent Trajectory
     print("\n-> [3/4] Evaluating Cashflow Forecasting Trajectory...")
     forecaster = ForecastingAgent(projection_days=90)
-    forecast_result = forecaster.compute_forecast(predicted_results, start_balance=5000.0)
+    forecast_result = forecaster.compute_forecast(predicted_results, start_balance=75000.0)
 
     trajectory = forecast_result.get("trajectory_points", [])
     has_valid_trajectory = len(trajectory) == 90
@@ -128,13 +128,14 @@ def run_self_evaluation() -> Dict[str, Any]:
     # Sanity checks on forecast
     forecast_consistency = 100.0 if (has_valid_trajectory and monthly_burn > 0 and savings_rate > 0) else 0.0
     print(f"   * Trajectory Horizon:        {len(trajectory)} days")
-    print(f"   * Monthly Burn Rate:         ${monthly_burn:,.2f}")
+    print(f"   * Monthly Burn Rate:         Rs. {monthly_burn:,.2f}")
     print(f"   * Projected Savings Rate:    {savings_rate:.1f}%")
     print(f"   * Forecast Sanity Score:     {forecast_consistency:.1f}%")
 
     # 4. Evaluate What-If Simulator on Decision Test Scenarios
     print("\n-> [4/4] Evaluating What-If Simulation Loop on Decision Scenarios...")
-    simulator = WhatIfSimulatorAgent(min_safety_buffer=1200.0)
+    simulator = WhatIfSimulatorAgent(min_safety_buffer=25000.0)
+
     
     sim_correct = 0
     sim_results_list = []

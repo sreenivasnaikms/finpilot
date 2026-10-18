@@ -90,25 +90,25 @@ flowchart TD
 - Employs Mesh API batch processing with structured JSON schema output and deterministic semantic fallbacks.
 
 ### 2. Behavior Analysis & Anomaly Agent (`finpilot/agents/analyzer.py`)
-- **Ghost Subscriptions**: Detects recurring fees billed each month with zero associated activity or redundant media overlap (e.g., dormant $180/mo Equinox gym membership, 4 overlapping streaming services).
-- **Month-over-Month Velocity Surges**: Detects rapid category acceleration (e.g., Food Delivery jumping from $320 to $475, +48% MoM).
-- **Weekend Impulse Clusters**: Uncovers weekend-concentrated discretionary spending.
+- **Ghost Subscriptions**: Detects recurring fees billed each month with zero associated activity or redundant media overlap (e.g., dormant ₹2,800/mo Cult.fit gym pass, 4 overlapping streaming services: Netflix, Hotstar, Prime, Spotify).
+- **Month-over-Month Velocity Surges**: Detects rapid category acceleration (e.g., Food Delivery jumping from ₹4,800 to ₹9,400, +95% MoM).
+- **Weekend Impulse Clusters**: Uncovers weekend-concentrated discretionary spending via UPI and quick commerce (Blinkit, Zepto, Swiggy Instamart).
 
 ### 3. Forecasting Agent (`finpilot/agents/forecaster.py`)
 - Generates a **90-day daily cashflow projection**.
-- Decomposes cashflow into bi-weekly salary inflows, deterministic fixed obligations (rent on the 1st, utilities on the 15th), and stochastic variable burn rates.
-- Flags **Minimum Buffer Breaches** (e.g. cash dipping below the $1,200 emergency threshold).
+- Decomposes cashflow into monthly salary inflows (e.g. ₹95,000/mo), deterministic fixed obligations (rent on the 1st, BESCOM electricity, ACT Fibernet), and stochastic variable burn rates.
+- Flags **Minimum Buffer Breaches** (e.g. cash dipping below the ₹25,000 emergency safety threshold).
 
 ### 4. What-If Simulation Engine (`finpilot/agents/simulator.py`)
 - Simulates counterfactual decisions:
-  - *"Can I afford a $1,800 trip next month?"*
-  - *"What if I commit to a $450/month car lease?"*
-  - *"What if I cancel $210/month in dormant gym and redundant streaming subscriptions?"*
-- Computes counterfactual trajectory curve, checks safety buffer preservation, evaluates active financial goals, and generates actionable trade-offs.
+  - *"Can I afford a ₹35,000 Goa trip next month?"*
+  - *"What if I commit to a ₹14,000/month Car EMI?"*
+  - *"What if I cancel ₹3,500/month in dormant Cult.fit and redundant streaming subscriptions?"*
+- Computes counterfactual trajectory curve, checks safety buffer preservation, evaluates active financial goals (e.g., ₹1,50,000 Emergency Fund), and generates actionable trade-offs.
 
 ### 5. Advisor Agent (`finpilot/agents/advisor.py`)
 - Converts anomalies and forecasts into prioritized, grounded recommendations.
-- **Auditable Decision Trail**: Records the precise triggering pattern, exact dollar impact, underlying transactions, and mathematical justification for every recommendation.
+- **Auditable Decision Trail**: Records the precise triggering pattern, exact rupee impact, underlying transactions, and mathematical justification for every recommendation.
 
 ### 6. Conversational Copilot (`finpilot/agents/copilot.py`)
 - Free-form natural language financial copilot grounded strictly in the user's real transactions, goals, and forecasts.

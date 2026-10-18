@@ -77,29 +77,30 @@ class CopilotAgent:
         q_lower = query.lower()
         if "afford" in q_lower:
             reply = (
-                f"Based on your current balance of **${current_balance:,.2f}** and 90-day projected end balance "
-                f"of **${forecast.get('projected_end_balance', 0.0):,.2f}**, you have cashflow room, but keep an eye "
-                f"on your monthly burn rate of **${forecast.get('monthly_burn_rate', 0.0):,.2f}**. "
+                f"Based on your current balance of **₹{current_balance:,.2f}** and 90-day projected end balance "
+                f"of **₹{forecast.get('projected_end_balance', 0.0):,.2f}**, you have cashflow room, but keep an eye "
+                f"on your monthly burn rate of **₹{forecast.get('monthly_burn_rate', 0.0):,.2f}**. "
                 f"Try running a simulation using the What-If Sandbox to see the exact trajectory impact!"
             )
             actions = ["Simulate in Sandbox", "Check Safety Buffer"]
         elif "subscription" in q_lower or "cancel" in q_lower:
             sub_count = len([a for a in anomalies if a.get("anomaly_type") == "GHOST_SUBSCRIPTION"])
             reply = (
-                f"You currently have **{sub_count}** flagged subscription anomalies. "
-                f"Top recommendation: check the Recommendations tab to cancel unused gym memberships and redundant streaming services."
+                f"You currently have **{sub_count}** flagged subscription anomalies (such as dormant Cult.fit passes or OTT sprawl). "
+                f"Top recommendation: check the Recommendations tab to cancel unused fitness memberships and redundant streaming services."
             )
             actions = ["Review Subscriptions", "Simulate Savings"]
         else:
             reply = (
-                f"Your current balance is **${current_balance:,.2f}** with an estimated savings rate of **{forecast.get('projected_savings_rate', 0.0)}%**. "
-                f"Your 90-day forecast projects you will reach **${forecast.get('projected_end_balance', 0.0):,.2f}**. "
+                f"Your current balance is **₹{current_balance:,.2f}** with an estimated savings rate of **{forecast.get('projected_savings_rate', 0.0)}%**. "
+                f"Your 90-day forecast projects you will reach **₹{forecast.get('projected_end_balance', 0.0):,.2f}**. "
                 f"Let me know if you would like to simulate a specific purchase or analyze your spending categories!"
             )
             actions = ["What-If Simulation", "View Trajectory"]
 
         return {
             "reply": reply,
-            "data_context_used": [f"Balance: ${current_balance:,.2f}", f"90d Forecast: ${forecast.get('projected_end_balance', 0.0):,.2f}"],
+            "data_context_used": [f"Balance: ₹{current_balance:,.2f}", f"90d Forecast: ₹{forecast.get('projected_end_balance', 0.0):,.2f}"],
             "suggested_actions": actions
         }
+

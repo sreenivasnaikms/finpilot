@@ -38,9 +38,9 @@ class AdvisorAgent:
                 rec_id = f"REC-SUB-{uuid.uuid4().hex[:6]}"
 
                 reasoning = (
-                    f"Triggered by Anomaly Detection Engine: Recurring charge of ${impact:.2f}/mo "
+                    f"Triggered by Anomaly Detection Engine: Recurring charge of ₹{impact:,.2f}/mo "
                     f"identified for {m_str}. Evidence shows continuous billing without commensurate activity. "
-                    f"Canceling these unlocks ${impact * 12:,.2f}/year towards financial independence."
+                    f"Canceling these unlocks ₹{impact * 12:,.2f}/year towards financial independence."
                 )
 
                 recommendations.append({
@@ -48,7 +48,7 @@ class AdvisorAgent:
                     "title": f"Cancel Unused Subscriptions ({m_str})",
                     "action": f"Cancel active recurring billing for {m_str} immediately.",
                     "category": anom.get("category", "Recurring Subscriptions"),
-                    "priority": "immediate" if impact > 50 else "high",
+                    "priority": "immediate" if impact > 1500 else "high",
                     "projected_monthly_savings": round(impact, 2),
                     "projected_annual_savings": round(impact * 12, 2),
                     "trigger_type": "GHOST_SUBSCRIPTION",
@@ -72,13 +72,13 @@ class AdvisorAgent:
                 reasoning = (
                     f"Triggered by Velocity Surge Monitor: Spending in '{cat}' accelerated rapidly "
                     f"({anom.get('metric_evidence')}). Capping out-of-home meal orders to twice weekly "
-                    f"recovers ${reclaim_target:.2f}/mo without drastic lifestyle disruption."
+                    f"recovers ₹{reclaim_target:,.2f}/mo without drastic lifestyle disruption."
                 )
 
                 recommendations.append({
                     "id": rec_id,
                     "title": f"Re-anchor Velocity in {cat}",
-                    "action": f"Set a hard weekly cap on {cat} to reduce excess spend by ${reclaim_target:.2f}/month.",
+                    "action": f"Set a hard weekly cap on {cat} to reduce excess spend by ₹{reclaim_target:,.2f}/month.",
                     "category": cat,
                     "priority": "high",
                     "projected_monthly_savings": round(reclaim_target, 2),
@@ -102,13 +102,13 @@ class AdvisorAgent:
                 reasoning = (
                     f"Triggered by Weekend Spend Concentration: Discretionary outlays disproportionately spike "
                     f"between Friday and Sunday ({anom.get('metric_evidence')}). Establishing a dedicated "
-                    f"weekend prepaid wallet recovers ${impact:.2f}/mo."
+                    f"weekend prepaid UPI wallet recovers ₹{impact:,.2f}/mo."
                 )
 
                 recommendations.append({
                     "id": rec_id,
                     "title": "Establish Weekend Discretionary Guardrails",
-                    "action": f"Impose a $150 weekend dining/entertainment envelope to capture ${impact:.2f}/mo savings.",
+                    "action": f"Impose a ₹3,500 weekend dining/entertainment envelope to capture ₹{impact:,.2f}/mo savings.",
                     "category": "Discretionary Lifestyle",
                     "priority": "medium",
                     "projected_monthly_savings": round(impact, 2),
@@ -139,13 +139,13 @@ class AdvisorAgent:
                 boost_needed = remaining / 6.0  # target 6 months
                 reasoning = (
                     f"Triggered by Goal Trajectory Analysis: Current savings rate ({savings_rate:.1f}%) "
-                    f"is insufficient to reach goal '{g_name}' (${g_target:,.2f}) on schedule. "
-                    f"Redirecting reclaimed subscription and surge savings of ${boost_needed:.2f}/mo guarantees arrival."
+                    f"is insufficient to reach goal '{g_name}' (₹{g_target:,.2f}) on schedule. "
+                    f"Redirecting reclaimed subscription and surge savings of ₹{boost_needed:,.2f}/mo via automated SIP guarantees arrival."
                 )
                 recommendations.append({
                     "id": rec_id,
                     "title": f"Accelerate Goal: {g_name}",
-                    "action": f"Set automated transfer of ${boost_needed:.2f}/month towards {g_name}.",
+                    "action": f"Set automated SIP transfer of ₹{boost_needed:,.2f}/month towards {g_name}.",
                     "category": "Savings & Investments",
                     "priority": "high",
                     "projected_monthly_savings": 0.0,
@@ -160,6 +160,7 @@ class AdvisorAgent:
                     },
                     "status": "pending"
                 })
+
 
         # 5. Enhance Nuance with Mesh API if online
         if self.mesh_client.is_configured() and recommendations:

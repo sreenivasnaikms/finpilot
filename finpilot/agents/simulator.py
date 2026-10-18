@@ -18,7 +18,7 @@ logger = logging.getLogger("finpilot.agents.simulator")
 class WhatIfSimulatorAgent:
     """Agent that stress-tests financial decisions against forward trajectories."""
 
-    def __init__(self, min_safety_buffer: float = 1200.0):
+    def __init__(self, min_safety_buffer: float = 25000.0):
         self.min_safety_buffer = min_safety_buffer
         self.mesh_client = get_mesh_client()
 
@@ -106,8 +106,8 @@ class WhatIfSimulatorAgent:
         baseline_end = trajectory_points[-1]["baseline_balance"]
         simulated_end = simulated_points[-1]["simulated_balance"]
         net_impact = simulated_end - baseline_end
-        monthly_burn = float(baseline_forecast.get("monthly_burn_rate", 3000.0))
-        monthly_income = float(baseline_forecast.get("monthly_burn_rate", 3000.0)) + float(baseline_forecast.get("projected_savings_rate", 0.0) * 50)
+        monthly_burn = float(baseline_forecast.get("monthly_burn_rate", 50000.0))
+        monthly_income = float(baseline_forecast.get("monthly_burn_rate", 50000.0)) + float(baseline_forecast.get("projected_savings_rate", 0.0) * 800)
 
         # Check impact on goals
         affected_goals = []
@@ -121,9 +121,9 @@ class WhatIfSimulatorAgent:
                     "impact": f"Postpones reaching '{g_name}' by projected horizon end."
                 })
 
-        # Assess Structural & Outlay Risk Thresholds
-        is_large_outlay = (sc_type == "ONE_TIME_PURCHASE" and amount >= 3500.0)
-        is_heavy_recurring_burden = (sc_type == "RECURRING_EXPENSE" and amount >= 600.0)
+        # Assess Structural & Outlay Risk Thresholds (Indian Conditions)
+        is_large_outlay = (sc_type == "ONE_TIME_PURCHASE" and amount >= 35000.0)
+        is_heavy_recurring_burden = (sc_type == "RECURRING_EXPENSE" and amount >= 8000.0)
 
         # Determine Verdict
         if simulated_end < 0 or min_simulated_bal < 0:
@@ -134,7 +134,7 @@ class WhatIfSimulatorAgent:
             verdict = "HIGH_RISK"
             verdict_badge = "⚠️ High Risk"
             is_affordable = False
-        elif affected_goals or (sc_type == "ONE_TIME_PURCHASE" and amount > 1500.0):
+        elif affected_goals or (sc_type == "ONE_TIME_PURCHASE" and amount > 15000.0):
             verdict = "CONDITIONAL"
             verdict_badge = "⚖️ Conditional"
             is_affordable = True
@@ -143,31 +143,30 @@ class WhatIfSimulatorAgent:
             verdict_badge = "✅ Affordable"
             is_affordable = True
 
-
         # Generate Actionable Trade-offs
         trade_offs = []
         if verdict in ["CONDITIONAL", "HIGH_RISK", "UNSUSTAINABLE"]:
             monthly_recovery_needed = abs(net_impact) / 3.0  # over 3 months
-            trade_offs.append(f"Trim dining out and delivery by ${monthly_recovery_needed * 0.5:.2f}/mo.")
-            trade_offs.append(f"Pause unused subscriptions to reclaim ${monthly_recovery_needed * 0.25:.2f}/mo.")
-            trade_offs.append("Delay purchase by 45 days to allow cash reserves to replenish.")
+            trade_offs.append(f"Trim Swiggy/Zomato dining and food delivery by ₹{monthly_recovery_needed * 0.5:,.2f}/mo.")
+            trade_offs.append(f"Pause unused Cult.fit or OTT subscriptions to reclaim ₹{monthly_recovery_needed * 0.25:,.2f}/mo.")
+            trade_offs.append("Delay purchase by 45 days to allow emergency reserve to replenish.")
 
         # Grounded reasoning trail
         if is_affordable and verdict == "AFFORDABLE":
             reasoning = (
-                f"Approved: After allocating ${amount:,.2f} for '{name}', your minimum reserve remains "
-                f"${min_simulated_bal:,.2f} (above safety threshold of ${self.min_safety_buffer:,.2f}), "
-                f"and projected 90-day ending balance settles at ${simulated_end:,.2f}."
+                f"Approved: After allocating ₹{amount:,.2f} for '{name}', your minimum reserve remains "
+                f"₹{min_simulated_bal:,.2f} (above safety threshold of ₹{self.min_safety_buffer:,.2f}), "
+                f"and projected 90-day ending balance settles at ₹{simulated_end:,.2f}."
             )
         elif verdict == "CONDITIONAL":
             reasoning = (
-                f"Conditional: You can absorb the ${amount:,.2f} outlay, but your minimum balance "
-                f"compresses to ${min_simulated_bal:,.2f} and compromises active goal milestones ({len(affected_goals)} goals delayed)."
+                f"Conditional: You can absorb the ₹{amount:,.2f} outlay, but your minimum balance "
+                f"compresses to ₹{min_simulated_bal:,.2f} and compromises active goal milestones ({len(affected_goals)} goals delayed)."
             )
         else:
             reasoning = (
-                f"Risk Warning: Committing ${amount:,.2f} causes your liquidity to breach the minimum "
-                f"safety cushion on {breach_date}, dropping balance to ${min_simulated_bal:,.2f}."
+                f"Risk Warning: Committing ₹{amount:,.2f} causes your liquidity to breach the minimum "
+                f"safety cushion on {breach_date}, dropping balance to ₹{min_simulated_bal:,.2f}."
             )
 
         # Synthesize with Mesh API if online for nuanced natural language
@@ -193,7 +192,7 @@ class WhatIfSimulatorAgent:
                         {"role": "user", "content": json.dumps(user_content)}
                     ],
                     fallback_dict={
-                        "impact_summary": f"Simulated {name} with net impact of ${net_impact:,.2f}.",
+                        "impact_summary": f"Simulated {name} with net impact of ₹{net_impact:,.2f}.",
                         "reasoning_trail": reasoning,
                         "actionable_trade_offs": trade_offs
                     }
@@ -210,7 +209,7 @@ class WhatIfSimulatorAgent:
             "is_affordable": is_affordable,
             "verdict": verdict,
             "verdict_badge": verdict_badge,
-            "impact_summary": f"Simulated {name} ({freq}) for ${amount:,.2f}. 90-day balance shifts by ${net_impact:,.2f}.",
+            "impact_summary": f"Simulated {name} ({freq}) for ₹{amount:,.2f}. 90-day balance shifts by ₹{net_impact:,.2f}.",
             "baseline_end_balance": round(baseline_end, 2),
             "simulated_end_balance": round(simulated_end, 2),
             "net_balance_impact": round(net_impact, 2),
@@ -221,6 +220,7 @@ class WhatIfSimulatorAgent:
             "reasoning_trail": reasoning,
             "simulated_points": simulated_points
         }
+
 
     def run(self, state: Dict[str, Any]) -> Dict[str, Any]:
         """LangGraph node execution for simulation."""

@@ -54,7 +54,7 @@ def rule_based_fallback_categorize(tx: Dict[str, Any]) -> Dict[str, Any]:
     combined = f"{merchant} {desc}"
     amount = float(tx.get("amount", 0.0))
 
-    if amount < 0 or any(k in combined for k in ["payroll", "salary", "employer", "deposit", "direct dep", "dividend"]):
+    if amount < 0 or any(k in combined for k in ["payroll", "salary", "employer", "deposit", "direct dep", "dividend", "neft salary", "imps salary"]):
         return {
             "category": "Salary & Wages" if "salary" in combined or "payroll" in combined else "Income",
             "category_group": "Income",
@@ -63,40 +63,40 @@ def rule_based_fallback_categorize(tx: Dict[str, Any]) -> Dict[str, Any]:
             "reasoning": "Negative amount or payroll/salary keywords detected"
         }
 
-    # Fixed Essentials
-    if any(k in combined for k in ["rent", "lease", "property mgmt", "mortgage", "apartments"]):
+    # Fixed Essentials (Rent, Maintenance, Utilities)
+    if any(k in combined for k in ["rent", "lease", "property mgmt", "nobroker", "mygate", "society maintenance", "apartments"]):
         return {
             "category": "Rent & Housing",
             "category_group": "Fixed Essentials",
             "is_recurring": True,
             "confidence": 0.98,
-            "reasoning": "Housing / Rent keyword match"
+            "reasoning": "Housing / Rent or Society Maintenance match"
         }
-    if any(k in combined for k in ["electric", "water", "coned", "pge", "national grid", "utilities", "internet", "comcast", "verizon"]):
+    if any(k in combined for k in ["electric", "water", "coned", "bescom", "tata power", "adani electricity", "cesc", "act fibernet", "jio fiber", "jiofiber", "airtel", "jio", "utilities", "broadband"]):
         return {
             "category": "Utilities",
             "category_group": "Fixed Essentials",
             "is_recurring": True,
             "confidence": 0.92,
-            "reasoning": "Utility provider identified"
+            "reasoning": "Indian utility/telecom/broadband provider identified"
         }
 
-    # Subscriptions
-    if any(k in combined for k in ["netflix", "spotify", "hulu", "disney+", "youtube premium", "hbo", "apple.com/bill"]):
+    # Subscriptions & Fitness
+    if any(k in combined for k in ["netflix", "spotify", "hotstar", "disney+ hotstar", "sonyliv", "zee5", "jiocinema", "amazon prime", "prime video", "youtube premium", "apple.com/bill"]):
         return {
             "category": "Digital Streaming",
             "category_group": "Recurring Subscriptions",
             "is_recurring": True,
             "confidence": 0.97,
-            "reasoning": "Recognized digital streaming subscription"
+            "reasoning": "Recognized OTT/digital streaming subscription"
         }
-    if any(k in combined for k in ["gym", "equinox", "planet fitness", "crunch", "crossfit", "anytime fitness"]):
+    if any(k in combined for k in ["cult.fit", "cult fit", "cultpass", "gym", "gold's gym", "anytime fitness", "equinox", "crunch", "crossfit"]):
         return {
             "category": "Fitness & Gym",
             "category_group": "Recurring Subscriptions",
             "is_recurring": True,
             "confidence": 0.95,
-            "reasoning": "Fitness club membership"
+            "reasoning": "Fitness club / Cult.fit membership"
         }
     if any(k in combined for k in ["github", "openai", "aws", "notion", "adobe", "google one", "icloud"]):
         return {
@@ -108,23 +108,23 @@ def rule_based_fallback_categorize(tx: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     # Food Delivery & Dining
-    if any(k in combined for k in ["doordash", "ubereats", "uber eats", "grubhub", "postmates", "deliveroo", "swiggy", "zomato"]):
+    if any(k in combined for k in ["swiggy", "zomato", "eatclub", "box8", "doordash", "ubereats", "uber eats"]):
         return {
             "category": "Dining Out & Delivery",
             "category_group": "Discretionary Lifestyle",
             "is_recurring": False,
             "confidence": 0.98,
-            "reasoning": "Food delivery service platform"
+            "reasoning": "Food delivery service platform (Swiggy/Zomato)"
         }
-    if any(k in combined for k in ["starbucks", "dunkin", "blue bottle", "peet's", "coffee"]):
+    if any(k in combined for k in ["third wave coffee", "blue tokai", "chai point", "chaayos", "starbucks", "dunkin", "blue bottle", "coffee"]):
         return {
             "category": "Coffee & Cafes",
             "category_group": "Discretionary Lifestyle",
             "is_recurring": False,
             "confidence": 0.94,
-            "reasoning": "Cafe / Coffee chain"
+            "reasoning": "Cafe / Coffee & Chai chain"
         }
-    if any(k in combined for k in ["restaurant", "bistro", "chipotle", "mcdonald", "shake shack", "taco bell", "burger", "pizza", "sushi"]):
+    if any(k in combined for k in ["restaurant", "bistro", "biryani", "dhaba", "barbeque nation", "domino", "mcdonald", "burger", "pizza", "sushi", "chipotle", "bowl", "haldiram"]):
         return {
             "category": "Dining Out & Delivery",
             "category_group": "Discretionary Lifestyle",
@@ -133,34 +133,46 @@ def rule_based_fallback_categorize(tx: Dict[str, Any]) -> Dict[str, Any]:
             "reasoning": "Restaurant dining"
         }
 
-    # Groceries
-    if any(k in combined for k in ["trader joe", "whole foods", "safeway", "kroger", "walmart grocery", "aldi", "costco", "market"]):
+
+    # Groceries & Quick Commerce
+    if any(k in combined for k in ["zepto", "blinkit", "instamart", "bigbasket", "bb daily", "dmart", "nature's basket", "reliance fresh", "more retail", "trader joe", "whole foods", "safeway", "supermarket", "groceries"]):
         return {
             "category": "Groceries",
             "category_group": "Variable Living",
             "is_recurring": False,
-            "confidence": 0.92,
-            "reasoning": "Supermarket / grocery retailer"
+            "confidence": 0.95,
+            "reasoning": "Quick commerce / Supermarket grocery retailer"
         }
 
-    # Transportation
-    if any(k in combined for k in ["uber", "lyft", "mta", "transit", "subway", "caltrain", "shell", "chevron", "exxon"]):
+    # Transportation & Fuel
+    if any(k in combined for k in ["ola", "rapido", "namma yatri", "uber", "indian oil", "bharat petroleum", "hpcl", "shell", "metro", "fuel"]):
         return {
             "category": "Transportation",
             "category_group": "Variable Living",
             "is_recurring": False,
-            "confidence": 0.88,
-            "reasoning": "Rideshare / fuel / transit service"
+            "confidence": 0.90,
+            "reasoning": "Indian rideshare / fuel / metro transit service"
         }
 
-    # Default Discretionary
+    # Investments
+    if any(k in combined for k in ["zerodha", "groww", "kuvera", "mutual fund", "sip", "uti mf", "hdfc mf", "icici pru"]):
+        return {
+            "category": "Investments & SIP",
+            "category_group": "Income",
+            "is_recurring": True,
+            "confidence": 0.95,
+            "reasoning": "Investment platform or SIP auto-debit"
+        }
+
+    # Default Discretionary / Shopping
     return {
-        "category": "Shopping & Apparel" if any(k in combined for k in ["amazon", "target", "zara", "nike"]) else "General Expense",
+        "category": "Shopping & Apparel" if any(k in combined for k in ["myntra", "flipkart", "amazon", "ajio", "nykaa", "zara", "nike"]) else "General Expense",
         "category_group": "Discretionary Lifestyle",
         "is_recurring": False,
-        "confidence": 0.70,
-        "reasoning": "Standard discretionary retail expense"
+        "confidence": 0.75,
+        "reasoning": "Discretionary shopping / retail expense"
     }
+
 
 
 class CategorizationAgent:

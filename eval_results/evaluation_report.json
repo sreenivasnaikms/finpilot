@@ -1,5 +1,5 @@
 {
-  "evaluation_timestamp": "2026-10-18T15:51:35.832286+00:00",
+  "evaluation_timestamp": "2026-10-18T16:42:56.426851+00:00",
   "total_test_transactions": 56,
   "overall_performance_index": 100.0,
   "categorization_metrics": {
@@ -12,7 +12,7 @@
     "recurring_detection_f1": 1.0
   },
   "anomaly_detection_metrics": {
-    "total_detected": 4,
+    "total_detected": 5,
     "seeded_anomaly_recall_pct": 100.0,
     "ghost_gym_subscription_detected": true,
     "subscription_sprawl_detected": true,
@@ -20,9 +20,9 @@
   },
   "forecasting_metrics": {
     "forecast_days": 90,
-    "monthly_burn_rate": 3329.5,
-    "projected_savings_rate_pct": 57.5,
-    "projected_end_balance": 18604.29,
+    "monthly_burn_rate": 58783.29,
+    "projected_savings_rate_pct": 75.2,
+    "projected_end_balance": 611697.8,
     "forecast_sanity_score_pct": 100.0
   },
   "what_if_simulation_metrics": {
@@ -31,7 +31,7 @@
     "scenario_results": [
       {
         "scenario_name": "Affordable Mechanical Keyboard",
-        "amount": 220.0,
+        "amount": 4500.0,
         "expected_verdict": "AFFORDABLE",
         "actual_verdict": "AFFORDABLE",
         "is_affordable": true,
@@ -39,23 +39,23 @@
       },
       {
         "scenario_name": "Luxury Vacation to Maldives",
-        "amount": 5500.0,
+        "amount": 180000.0,
         "expected_verdict": "HIGH_RISK",
         "actual_verdict": "HIGH_RISK",
         "is_affordable": false,
         "passed": true
       },
       {
-        "scenario_name": "New Sports Car Lease",
-        "amount": 850.0,
+        "scenario_name": "Royal Enfield / Car EMI",
+        "amount": 14000.0,
         "expected_verdict": "HIGH_RISK",
         "actual_verdict": "HIGH_RISK",
         "is_affordable": false,
         "passed": true
       },
       {
-        "scenario_name": "Cancel Dormant Gym and Redundant Subs",
-        "amount": 210.0,
+        "scenario_name": "Cancel Dormant Cult.fit and Redundant OTT",
+        "amount": 3500.0,
         "expected_verdict": "AFFORDABLE",
         "actual_verdict": "AFFORDABLE",
         "is_affordable": true,

@@ -112,7 +112,7 @@
           <span>Starting Liquid Balance</span>
           <i class="ph-bold ph-wallet text-indigo-400"></i>
         </div>
-        <div class="text-2xl font-bold text-white mt-2" id="metricStartBal">$5,200.00</div>
+        <div class="text-2xl font-bold text-white mt-2" id="metricStartBal">₹75,000.00</div>
         <div class="text-xs text-emerald-400 mt-1 flex items-center gap-1 font-medium">
           <i class="ph-bold ph-shield-check"></i> Buffer Protected
         </div>
@@ -123,9 +123,9 @@
           <span>90-Day Projected Balance</span>
           <i class="ph-bold ph-trend-up text-indigo-400"></i>
         </div>
-        <div class="text-2xl font-bold text-white mt-2" id="metricProjBal">$18,604.29</div>
+        <div class="text-2xl font-bold text-white mt-2" id="metricProjBal">₹4,20,540.00</div>
         <div class="text-xs text-indigo-400 mt-1 flex items-center gap-1 font-medium" id="metricNetChange">
-          <i class="ph-bold ph-arrow-up-right"></i> +$13,404.29 net cashflow
+          <i class="ph-bold ph-arrow-up-right"></i> +₹3,45,540.00 net cashflow
         </div>
       </div>
 
@@ -134,9 +134,9 @@
           <span>Monthly Burn Rate</span>
           <i class="ph-bold ph-flame text-amber-400"></i>
         </div>
-        <div class="text-2xl font-bold text-white mt-2" id="metricBurnRate">$3,329.50</div>
+        <div class="text-2xl font-bold text-white mt-2" id="metricBurnRate">₹48,250.00</div>
         <div class="text-xs text-gray-400 mt-1" id="metricBurnSplit">
-          Fixed: $2,242 • Variable: $1,087
+          Fixed: ₹32,000 • Variable: ₹16,250
         </div>
       </div>
 
@@ -145,7 +145,7 @@
           <span>Projected Savings Rate</span>
           <i class="ph-bold ph-piggy-bank text-emerald-400"></i>
         </div>
-        <div class="text-2xl font-bold text-emerald-400 mt-2" id="metricSavingsRate">57.5%</div>
+        <div class="text-2xl font-bold text-emerald-400 mt-2" id="metricSavingsRate">58.0%</div>
         <div class="text-xs text-emerald-500 mt-1 flex items-center gap-1 font-medium">
           <i class="ph-bold ph-check-circle"></i> Exceeds 20% benchmark
         </div>
@@ -173,7 +173,7 @@
               <span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> Simulated
             </span>
             <span class="flex items-center gap-1 text-rose-500">
-              <span class="h-0.5 w-3 bg-rose-500"></span> Safety Buffer ($1,200)
+              <span class="h-0.5 w-3 bg-rose-500"></span> Safety Buffer (₹25,000)
             </span>
           </div>
         </div>
@@ -203,14 +203,14 @@
 
           <!-- Quick Scenario Chips -->
           <div class="flex flex-wrap gap-1.5 mt-3">
-            <button onclick="setScenarioPreset('Japan Vacation Trip', 'ONE_TIME_PURCHASE', 1800, 'one_time')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
-              ✈️ $1.8k Vacation
+            <button onclick="setScenarioPreset('Goa Vacation Trip', 'ONE_TIME_PURCHASE', 35000, 'one_time')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
+              ✈️ ₹35k Goa Trip
             </button>
-            <button onclick="setScenarioPreset('New Electric Car Lease', 'RECURRING_EXPENSE', 450, 'monthly')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
-              🚗 $450/mo Lease
+            <button onclick="setScenarioPreset('Royal Enfield / Car EMI', 'RECURRING_EXPENSE', 14000, 'monthly')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
+              🚗 ₹14k/mo EMI
             </button>
-            <button onclick="setScenarioPreset('Cancel Subscriptions & Gym', 'EXPENSE_REDUCTION', 210, 'monthly')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
-              ✂️ Save $210/mo
+            <button onclick="setScenarioPreset('Cancel Dormant Cult.fit & OTT', 'EXPENSE_REDUCTION', 3500, 'monthly')" class="text-[11px] px-2 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 transition">
+              ✂️ Save ₹3,500/mo
             </button>
           </div>
 
@@ -218,7 +218,7 @@
           <div class="space-y-3 mt-4 text-xs">
             <div>
               <label class="block text-gray-400 mb-1">Scenario Name / Decision</label>
-              <input type="text" id="simName" value="Trip to Japan" class="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500" />
+              <input type="text" id="simName" value="Goa Vacation Trip" class="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500" />
             </div>
 
             <div class="grid grid-cols-2 gap-2">
@@ -232,10 +232,11 @@
                 </select>
               </div>
               <div>
-                <label class="block text-gray-400 mb-1">Amount ($)</label>
-                <input type="number" id="simAmount" value="1800" class="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500" />
+                <label class="block text-gray-400 mb-1">Amount (₹)</label>
+                <input type="number" id="simAmount" value="35000" class="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500" />
               </div>
             </div>
+
 
             <div>
               <label class="block text-gray-400 mb-1">Frequency</label>
@@ -342,10 +343,10 @@
 
           <!-- Quick Question Chips -->
           <div class="flex flex-wrap gap-1.5 mt-2">
-            <button onclick="askPreset('Can I afford a $450 dinner party this weekend?')" class="text-[11px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700">
-              Can I afford $450 dinner?
+            <button onclick="askPreset('Can I afford a ₹3,500 weekend dining outing?')" class="text-[11px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700">
+              Can I afford ₹3.5k dinner?
             </button>
-            <button onclick="askPreset('Why is my food delivery spending flagged?')" class="text-[11px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700">
+            <button onclick="askPreset('Why is my Swiggy and Zomato spending flagged?')" class="text-[11px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700">
               Why was food delivery flagged?
             </button>
             <button onclick="askPreset('Which subscriptions should I cancel first?')" class="text-[11px] px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700">
@@ -361,11 +362,12 @@
 
         <!-- Input Bar -->
         <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
-          <input type="text" id="chatInput" placeholder="Ask FinPilot (e.g. Can I afford a $1,200 laptop?)" class="flex-1 px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-xs text-white focus:outline-none focus:border-indigo-500" />
+          <input type="text" id="chatInput" placeholder="Ask FinPilot (e.g. Can I afford a ₹65,000 laptop?)" class="flex-1 px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-xs text-white focus:outline-none focus:border-indigo-500" />
           <button type="submit" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow transition">
             Send
           </button>
         </form>
+
       </div>
 
       <!-- Verified Self-Evaluation & Accuracy Benchmark Card -->
@@ -435,7 +437,7 @@
       const labels = trajectory.map(p => p.date);
       const baselineData = trajectory.map(p => p.baseline_balance);
       const simulatedData = trajectory.map(p => p.simulated_balance !== null && p.simulated_balance !== undefined ? p.simulated_balance : p.baseline_balance);
-      const bufferData = trajectory.map(() => 1200);
+      const bufferData = trajectory.map(() => 25000);
 
       chartInstance = new Chart(ctx, {
         type: 'line',
@@ -462,7 +464,7 @@
               pointRadius: 0
             },
             {
-              label: 'Safety Buffer ($1,200)',
+              label: 'Safety Buffer (₹25,000)',
               data: bufferData,
               borderColor: '#ef4444',
               borderWidth: 1.5,
@@ -495,12 +497,13 @@
               grid: { color: 'rgba(255,255,255,0.04)' },
               ticks: {
                 color: '#9CA3AF',
-                callback: val => '$' + val.toLocaleString()
+                callback: val => '₹' + val.toLocaleString()
               }
             }
           }
         }
       });
+
     }
 
     // Load sample transactions
@@ -543,14 +546,14 @@
         globalRecommendations = data.recommendations || [];
 
         // Update Overview Metrics
-        document.getElementById('metricStartBal').innerText = '$' + (data.forecast.start_balance || 5200).toLocaleString();
-        document.getElementById('metricProjBal').innerText = '$' + (data.forecast.projected_end_balance || 18604.29).toLocaleString();
-        document.getElementById('metricBurnRate').innerText = '$' + (data.forecast.monthly_burn_rate || 3329.50).toLocaleString();
-        document.getElementById('metricSavingsRate').innerText = (data.forecast.projected_savings_rate || 57.5) + '%';
-        document.getElementById('metricBurnSplit').innerText = `Fixed: $${data.forecast.monthly_recurring_fixed || 2242} • Variable: $${data.forecast.monthly_variable_spend || 1087}`;
+        document.getElementById('metricStartBal').innerText = '₹' + (data.forecast.start_balance || 75000).toLocaleString();
+        document.getElementById('metricProjBal').innerText = '₹' + (data.forecast.projected_end_balance || 420540).toLocaleString();
+        document.getElementById('metricBurnRate').innerText = '₹' + (data.forecast.monthly_burn_rate || 48250).toLocaleString();
+        document.getElementById('metricSavingsRate').innerText = (data.forecast.projected_savings_rate || 58.0) + '%';
+        document.getElementById('metricBurnSplit').innerText = `Fixed: ₹${data.forecast.monthly_recurring_fixed || 32000} • Variable: ₹${data.forecast.monthly_variable_spend || 16250}`;
 
         const netGain = (data.forecast.projected_end_balance - data.forecast.start_balance);
-        document.getElementById('metricNetChange').innerHTML = `<i class="ph-bold ph-arrow-up-right"></i> +$${netGain.toLocaleString()} net cashflow`;
+        document.getElementById('metricNetChange').innerHTML = `<i class="ph-bold ph-arrow-up-right"></i> +₹${netGain.toLocaleString()} net cashflow`;
 
         // Update Chart
         initChart(data.forecast.trajectory_points || []);
@@ -600,7 +603,7 @@
               <p class="text-xs text-gray-300 mt-1 font-medium">${r.action}</p>
             </div>
             <div class="text-right whitespace-nowrap">
-              ${r.projected_monthly_savings > 0 ? `<div class="text-xs font-bold text-emerald-400">+$${r.projected_monthly_savings}/mo</div><div class="text-[10px] text-gray-400">+$${r.projected_annual_savings}/yr</div>` : ''}
+              ${r.projected_monthly_savings > 0 ? `<div class="text-xs font-bold text-emerald-400">+₹${r.projected_monthly_savings}/mo</div><div class="text-[10px] text-gray-400">+₹${r.projected_annual_savings}/yr</div>` : ''}
             </div>
           </div>
 
@@ -653,7 +656,7 @@
             <div class="space-y-1">
               <div class="flex justify-between items-center">
                 <span class="font-semibold text-gray-200">${g.name}</span>
-                <span class="text-indigo-400 font-mono font-medium">$${g.current_amount.toLocaleString()} / $${g.target_amount.toLocaleString()}</span>
+                <span class="text-indigo-400 font-mono font-medium">₹${g.current_amount.toLocaleString()} / ₹${g.target_amount.toLocaleString()}</span>
               </div>
               <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-gray-700">
                 <div class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
@@ -665,6 +668,7 @@
             </div>
           `;
         }).join('');
+
       } catch (e) {
         console.error(e);
       }

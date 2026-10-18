@@ -92,7 +92,7 @@ class DigestSchedulerService:
             orchestrator = get_orchestrator()
             pipeline_result = orchestrator.run_full_pipeline(
                 transactions=tx_dicts,
-                current_balance=5000.0,
+                current_balance=75000.0,
                 goals=goal_dicts
             )
 
@@ -105,17 +105,17 @@ class DigestSchedulerService:
             health = int(min(100, max(20, 60 + (savings_rate * 1.5) - (len(anomalies) * 8))))
 
             # Formulate key forward insight
-            end_bal = forecast.get("projected_end_balance", 5000.0)
+            end_bal = forecast.get("projected_end_balance", 75000.0)
             if anomalies:
                 top_anom = anomalies[0]
                 insight = (
-                    f"90-Day Trajectory: You are on path to reach ${end_bal:,.2f}, but "
-                    f"{top_anom.get('title')} is draining ${top_anom.get('monthly_impact', 0.0):.2f}/mo. "
-                    f"Taking immediate action protects your runway buffer."
+                    f"90-Day Trajectory: You are on path to reach ₹{end_bal:,.2f}, but "
+                    f"{top_anom.get('title')} is draining ₹{top_anom.get('monthly_impact', 0.0):,.2f}/mo. "
+                    f"Taking immediate action protects your emergency buffer."
                 )
             else:
                 insight = (
-                    f"90-Day Trajectory: Stable cashflow projected to finish at ${end_bal:,.2f} "
+                    f"90-Day Trajectory: Stable cashflow projected to finish at ₹{end_bal:,.2f} "
                     f"with a {savings_rate:.1f}% savings rate. All buffers intact."
                 )
 
@@ -140,9 +140,10 @@ class DigestSchedulerService:
                 "key_forward_insight": insight,
                 "primary_action": top_rec,
                 "secondary_actions": recommendations[1:4] if len(recommendations) > 1 else [],
-                "forecast_summary": f"Burn rate: ${forecast.get('monthly_burn_rate', 0.0):,.2f}/mo. End balance: ${end_bal:,.2f}.",
+                "forecast_summary": f"Burn rate: ₹{forecast.get('monthly_burn_rate', 0.0):,.2f}/mo. End balance: ₹{end_bal:,.2f}.",
                 "goals_progress": goal_dicts
             }
+
 
             # Save digest to DB
             db_digest = DBDigest(

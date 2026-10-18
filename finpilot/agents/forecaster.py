@@ -59,7 +59,7 @@ class ForecastingAgent:
             days_span = max(1, (df["date"].max() - df["date"].min()).days)
             monthly_income = (total_income / days_span) * 30.4
         else:
-            monthly_income = 4500.0  # sensible default baseline
+            monthly_income = 95000.0  # sensible Indian tech professional baseline
 
         # 2. Decompose Expenses into Fixed vs Variable
         expense_df = df[(df["amount"] > 0) & (df["category_group"] != "Income")]
@@ -68,8 +68,8 @@ class ForecastingAgent:
         fixed_df = expense_df[expense_df["is_recurring"] == True]
         variable_df = expense_df[expense_df["is_recurring"] == False]
 
-        monthly_fixed = (fixed_df["amount"].sum() / days_span) * 30.4 if not fixed_df.empty else 1800.0
-        monthly_variable = (variable_df["amount"].sum() / days_span) * 30.4 if not variable_df.empty else 1600.0
+        monthly_fixed = (fixed_df["amount"].sum() / days_span) * 30.4 if not fixed_df.empty else 32000.0
+        monthly_variable = (variable_df["amount"].sum() / days_span) * 30.4 if not variable_df.empty else 24000.0
         monthly_burn = monthly_fixed + monthly_variable
 
         daily_variable = monthly_variable / 30.4
@@ -136,18 +136,19 @@ class ForecastingAgent:
             })
 
         # Assess Risks
-        if min_balance < 1000:
+        if min_balance < 25000:
             key_risks.append(
-                f"Emergency buffer risk: Cash balance projected to dip to ${min_balance:.2f} on {min_bal_day}."
+                f"Emergency buffer risk: Cash balance projected to dip to ₹{min_balance:,.2f} on {min_bal_day}."
             )
         if net_monthly_cashflow < 0:
             key_risks.append(
-                f"Deficit warning: Spending exceeds income by ${abs(net_monthly_cashflow):.2f}/month."
+                f"Deficit warning: Spending exceeds income by ₹{abs(net_monthly_cashflow):,.2f}/month."
             )
         if savings_rate < 15.0 and savings_rate >= 0:
             key_risks.append(
                 f"Low savings buffer: Current trajectory yields only {savings_rate:.1f}% savings rate."
             )
+
 
         return {
             "projection_days": self.projection_days,

@@ -129,21 +129,22 @@ def load_sample_dataset(db: Session = Depends(get_db)):
             db.add_all([
                 DBGoal(
                     name="Emergency Reserve Fund",
-                    target_amount=6000.0,
-                    current_amount=3800.0,
+                    target_amount=300000.0,
+                    current_amount=140000.0,
                     target_date="2026-12-31",
                     priority="high",
                     status="on_track"
                 ),
                 DBGoal(
-                    name="Japan Vacation",
-                    target_amount=3200.0,
-                    current_amount=1200.0,
+                    name="Goa / Bali Vacation",
+                    target_amount=80000.0,
+                    current_amount=32000.0,
                     target_date="2027-03-31",
                     priority="medium",
                     status="on_track"
                 )
             ])
+
 
         db.commit()
         return {"message": "Sample transactions & goals loaded successfully.", "count": len(db_records)}
@@ -174,7 +175,7 @@ def list_transactions(db: Session = Depends(get_db)):
 
 @router.post("/pipeline/run")
 def run_orchestrator_pipeline(
-    balance: float = 5200.0,
+    balance: float = 75000.0,
     db: Session = Depends(get_db)
 ):
     """Run full LangGraph multi-agent pipeline."""
@@ -253,7 +254,7 @@ def run_orchestrator_pipeline(
 @router.post("/simulate")
 def simulate_decision(
     scenario: WhatIfScenario,
-    start_balance: float = 5200.0,
+    start_balance: float = 75000.0,
     db: Session = Depends(get_db)
 ):
     """Simulate a what-if scenario against the forecast."""
@@ -316,7 +317,7 @@ def get_latest_digest(db: Session = Depends(get_db)):
 @router.post("/chat")
 def chat_copilot(
     req: ChatRequest,
-    current_balance: float = 5200.0,
+    current_balance: float = 75000.0,
     db: Session = Depends(get_db)
 ):
     """Interactive conversational copilot grounded in user financial data."""
