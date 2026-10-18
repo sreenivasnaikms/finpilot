@@ -151,8 +151,9 @@ python -m finpilot.evaluation.evaluate
 ### 2. Clone and Setup Environment
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/finpilot.git
+git clone https://github.com/sreenivasnaikms/finpilot.git
 cd finpilot
+
 
 # Create and activate virtual environment
 python -m venv .venv
@@ -268,4 +269,4 @@ This repository includes the official hackathon automated check workflow at `.gi
 
 ---
 
-*Built with ❤️ for Agent Arena 2026 Hackathon.*
+*Developed by [Sreenivas Naik](https://github.com/sreenivasnaikms) for Agent Arena 2026 Hackathon.*
