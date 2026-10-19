@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinPilot — Proactive Multi-Agent Financial Assistant</title>
+  <title>FinPilot — Proactive Multi-Agent Financial Copilot</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,18 +13,12 @@
         extend: {
           colors: {
             brand: {
-              50: '#eef2ff',
               500: '#6366f1',
               600: '#4f46e5',
-              700: '#4338ca',
             },
-            accent: {
-              emerald: '#10b981',
-              lime: '#84cc16'
-            },
-            darkbg: '#080c14',
+            darkbg: '#090d16',
             darkcard: '#0f172a',
-            darksurface: '#131d33',
+            darksurface: '#131e36',
             darkborder: '#1e293b'
           }
         }
@@ -36,7 +30,7 @@
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    body { background-color: #080c14; color: #F3F4F6; }
+    body { background-color: #090d16; color: #F3F4F6; }
     .glass-card {
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(14px);
@@ -45,33 +39,19 @@
     .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
     .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    .agent-glow-running {
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+    .agent-active {
       border-color: #10b981 !important;
-    }
-    .node-pulse {
-      animation: pulseGlow 2s infinite ease-in-out;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
-      50% { filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.9)); }
-    }
-    /* Toggle switch */
-    .switch-checkbox:checked + .switch-label {
-      background-color: #10b981;
-    }
-    .switch-checkbox:checked + .switch-label .switch-dot {
-      transform: translateX(1.25rem);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
     }
   </style>
 </head>
 <body class="min-h-screen font-sans antialiased custom-scroll pb-16">
 
-  <!-- Top Sticky Navigation -->
+  <!-- Header -->
   <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-emerald-500/25">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
           <i class="ph-bold ph-compass text-2xl"></i>
         </div>
         <div>
@@ -82,14 +62,16 @@
               <i class="ph-bold ph-lightning text-yellow-400"></i> Mesh API Active
             </span>
           </div>
-          <p class="text-xs text-slate-400">Proactive Multi-Agent Financial Assistant • LangGraph</p>
+          <p class="text-xs text-slate-400">Forward-Looking Proactive Financial Copilot</p>
         </div>
       </div>
 
-      <!-- Quick Header Actions -->
       <div class="flex items-center space-x-3">
+        <button onclick="scrollToStep('step-upload')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="ph-bold ph-upload-simple"></i> Upload CSV
+        </button>
         <button onclick="switchTab('tab-how-it-works')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
-          <i class="ph-bold ph-git-fork text-emerald-400"></i> How it works
+          <i class="ph-bold ph-tree-structure text-emerald-400"></i> Architecture
         </button>
         <div class="px-2.5 py-1 text-xs rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 font-mono font-bold flex items-center gap-1">
           <i class="ph-bold ph-seal-check"></i> Score: 100/100
@@ -98,356 +80,253 @@
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <!-- ========================================== -->
-    <!-- STEP 1: PERSONA SELECTOR & INGESTION BOX   -->
-    <!-- ========================================== -->
-    <section class="space-y-4">
+    <!-- ============================================== -->
+    <!-- STEP 1: UPLOAD TRANSACTIONS (CLEAN & DIRECT)   -->
+    <!-- ============================================== -->
+    <section id="step-upload" class="space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="h-6 w-6 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/40">1</span>
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Select Test Persona or Upload Transactions CSV</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Upload Your Transactions</h2>
         </div>
-        <span class="text-xs text-slate-400">Transactions are parsed & validated before multi-agent execution</span>
+        <span class="text-xs text-slate-400">CSV format: date, amount, merchant, description</span>
       </div>
 
-      <!-- 3 Persona Cards (Matches Image 3) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
         
-        <!-- Persona 1: Aarav -->
-        <div id="persona-card-aarav" onclick="selectPersona('aarav')" class="persona-card p-3.5 rounded-xl bg-slate-900/90 border-2 border-emerald-500 shadow-md shadow-emerald-500/10 cursor-pointer transition hover:border-emerald-400">
-          <div class="flex items-start gap-3">
-            <div class="h-10 w-10 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center border border-emerald-500/30 text-sm">
-              AA
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold text-white">Aarav</h3>
-                <span class="text-[11px] text-slate-400">26 • Bengaluru</span>
+        <!-- Left: Upload Dropzone (8 cols) -->
+        <div class="lg:col-span-8 glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i class="ph-bold ph-cloud-arrow-up text-2xl"></i>
               </div>
-              <p class="text-[11px] text-slate-300 font-medium">Software engineer</p>
-              <p class="text-[11px] text-slate-400 mt-1 truncate">Earns well, spends fast. Wants a safety net.</p>
-              <p class="text-[11px] text-emerald-400 font-semibold mt-1">Goal: ₹1,50,000 emergency fund</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Persona 2: Priya -->
-        <div id="persona-card-priya" onclick="selectPersona('priya')" class="persona-card p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition">
-          <div class="flex items-start gap-3">
-            <div class="h-10 w-10 rounded-full bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center border border-indigo-500/30 text-sm">
-              PR
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold text-white">Priya</h3>
-                <span class="text-[11px] text-slate-400">29 • Pune</span>
+              <div>
+                <h3 class="text-sm font-bold text-white">Import Transaction History</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Upload your bank or UPI transaction export to evaluate</p>
               </div>
-              <p class="text-[11px] text-slate-300 font-medium">Freelance designer</p>
-              <p class="text-[11px] text-slate-400 mt-1 truncate">Irregular income. Wants a 6-month buffer.</p>
-              <p class="text-[11px] text-emerald-400 font-semibold mt-1">Goal: ₹2,70,000 6-month safety buffer</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Persona 3: Sharma Family -->
-        <div id="persona-card-sharma" onclick="selectPersona('sharma')" class="persona-card p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition">
-          <div class="flex items-start gap-3">
-            <div class="h-10 w-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center border border-amber-500/30 text-sm">
-              RS
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold text-white">The Sharma family</h3>
-                <span class="text-[11px] text-slate-400">Rohan & Meera • Delhi</span>
-              </div>
-              <p class="text-[11px] text-slate-300 font-medium">Dual Corporate</p>
-              <p class="text-[11px] text-slate-400 mt-1 truncate">Two incomes, home loan. School fees due April.</p>
-              <p class="text-[11px] text-emerald-400 font-semibold mt-1">Goal: ₹1,80,000 school fees (due april)</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Persona Financial Profile & CSV Upload Control Bar -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
-        
-        <!-- Left: Persona Stats with Progress Ring (4 cols) -->
-        <div class="lg:col-span-4 glass-card p-4 rounded-2xl flex items-center gap-4">
-          <!-- Circular Progress Ring -->
-          <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
-            <svg class="w-20 h-20 transform -rotate-90">
-              <circle cx="40" cy="40" r="32" stroke="currentColor" stroke-width="6" class="text-slate-800" fill="transparent" />
-              <circle id="goalRingCircle" cx="40" cy="40" r="32" stroke="currentColor" stroke-width="6" class="text-emerald-500 transition-all duration-700" stroke-dasharray="201.06" stroke-dashoffset="94.5" stroke-linecap="round" fill="transparent" />
-            </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span id="goalPercentText" class="text-sm font-bold text-white">53%</span>
-              <span class="text-[9px] text-slate-400 uppercase tracking-wider">Funded</span>
-            </div>
-          </div>
-
-          <!-- Numbers -->
-          <div class="space-y-1 min-w-0 flex-1">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400">Income</span>
-              <span id="profileIncome" class="font-bold text-white">₹1,15,000/mo</span>
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400">Savings</span>
-              <span id="profileSavings" class="font-bold text-emerald-400">₹65,000</span>
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400">Target Goal</span>
-              <span id="profileGoal" class="font-bold text-indigo-300">₹1,50,000</span>
-            </div>
-            <p id="profileGoalDesc" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 truncate">
-              Emergency Reserve Fund • by Dec 2026
-            </p>
-          </div>
-        </div>
-
-        <!-- Middle: File status & Upload Drag/Drop Box (4 cols) -->
-        <div class="lg:col-span-4 glass-card p-4 rounded-2xl flex flex-col justify-between">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <i class="ph-bold ph-file-csv text-emerald-400 text-lg"></i>
-              <span id="activeFileName" class="text-xs font-bold text-white">aarav_jul_sep.csv</span>
-              <span id="activeFileRows" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">56 rows</span>
-            </div>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30 flex items-center gap-1">
-              <i class="ph-bold ph-check"></i> Loaded & ready
-            </span>
-          </div>
-
-          <!-- Upload Custom Button -->
-          <div class="mt-2.5 flex items-center gap-2">
-            <label class="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium text-slate-200 text-center cursor-pointer transition flex items-center justify-center gap-1.5">
-              <i class="ph-bold ph-upload-simple text-emerald-400"></i> Upload Custom CSV
-              <input type="file" id="customCsvInput" accept=".csv" class="hidden" onchange="handleCsvUpload(this)" />
-            </label>
-            <button onclick="downloadSampleCsv()" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 transition" title="Download CSV Template">
-              <i class="ph-bold ph-download-simple"></i>
+            
+            <button onclick="loadSampleData()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 font-medium text-xs border border-slate-700 flex items-center gap-1.5 transition">
+              <i class="ph-bold ph-database"></i> Use Sample Indian Techie Data (56 rows)
             </button>
           </div>
+
+          <!-- Drag and Drop Box -->
+          <div class="p-6 rounded-xl border-2 border-dashed border-slate-700 hover:border-emerald-500/60 bg-slate-900/50 text-center transition cursor-pointer flex flex-col items-center justify-center" onclick="document.getElementById('csvFileInput').click()">
+            <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="uploadCSV(this)" />
+            <i class="ph-bold ph-file-csv text-3xl text-emerald-400 mb-2"></i>
+            <span class="text-xs font-bold text-white">Click or drag & drop transaction CSV here</span>
+            <span class="text-[11px] text-slate-400 mt-1">Supports standard CSV exports with positive expenses and negative salary</span>
+          </div>
+
+          <!-- Loaded File Status Bar -->
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+              <span id="loadedFileName" class="text-xs font-bold text-slate-200">sample_transactions.csv</span>
+              <span id="loadedRowCount" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">56 transactions loaded</span>
+            </div>
+            <span class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+              <i class="ph-bold ph-check"></i> Ready for analysis
+            </span>
+          </div>
         </div>
 
-        <!-- Right: Primary Run Button & Stepper Controls (4 cols) -->
-        <div class="lg:col-span-4 glass-card p-4 rounded-2xl flex flex-col justify-between space-y-2">
-          <!-- Big Green Run FinPilot Button (Matching Image 3) -->
-          <button id="runFinPilotBtn" onclick="startExecution()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 transition transform active:scale-95">
-            <i class="ph-fill ph-play text-base"></i> Run FinPilot
-          </button>
-
-          <!-- Stepper & Playback Controls (Matching Image 3) -->
-          <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
-            <div class="flex items-center gap-1">
-              <button onclick="pauseExecution()" id="pauseBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" title="Pause">
-                <i class="ph-bold ph-pause"></i> Pause
-              </button>
-              <button onclick="nextStepExecution()" id="nextStepBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" title="Next Step">
-                <i class="ph-bold ph-caret-right"></i> Next
-              </button>
-              <button onclick="resetExecution()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" title="Reset">
-                <i class="ph-bold ph-arrow-counter-clockwise"></i>
-              </button>
-            </div>
-
-            <!-- Mode & Speed -->
-            <div class="flex items-center gap-1.5 font-mono text-[11px]">
-              <button onclick="setSpeed(1)" id="speed1xBtn" class="px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold">1x</button>
-              <button onclick="setSpeed(2)" id="speed2xBtn" class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">2x</button>
-              <span class="text-slate-600">|</span>
-              <button onclick="setMode('auto')" id="modeAutoBtn" class="px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold">Auto</button>
-              <button onclick="setMode('step')" id="modeStepBtn" class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">Step</button>
+        <!-- Right: Starting Balance, Goal & Run Action (4 cols) -->
+        <div class="lg:col-span-4 glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+              <i class="ph-bold ph-sliders text-emerald-400"></i> Baseline Parameters
+            </h3>
+            
+            <div class="space-y-3 mt-3">
+              <div>
+                <label class="text-[11px] font-semibold text-slate-400 block">Current Liquid Balance (₹)</label>
+                <input type="number" id="startBalanceInput" value="75000" class="w-full mt-1 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500 font-bold" />
+              </div>
+              <div>
+                <label class="text-[11px] font-semibold text-slate-400 block">Active Savings Goal</label>
+                <div class="mt-1 p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs">
+                  <div>
+                    <span class="font-bold text-white block">Emergency Reserve Fund</span>
+                    <span class="text-[10px] text-slate-400">Target: ₹1,50,000 by Dec 2026</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-400">43% Funded</span>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Big Run Analysis Button -->
+          <button id="runPipelineBtn" onclick="runPipeline()" class="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition transform active:scale-95">
+            <i class="ph-fill ph-play text-base"></i> Run Multi-Agent Analysis
+          </button>
         </div>
 
       </div>
     </section>
 
-    <!-- ======================================================= -->
-    <!-- STEP 2: AGENT STATUS PIPELINE & LIVE AGENT LOG TERMINAL -->
-    <!-- ======================================================= -->
-    <section class="space-y-4">
+    <!-- ============================================== -->
+    <!-- STEP 2: AGENT STATUS PIPELINE & EXECUTION FLOW -->
+    <!-- ============================================== -->
+    <section id="step-agents" class="space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="h-6 w-6 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/40">2</span>
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Multi-Agent Pipeline Status & Execution Flow</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Multi-Agent Execution Status</h2>
         </div>
-        <button onclick="skipToResult()" class="text-xs text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 transition">
-          Skip to result <i class="ph-bold ph-arrow-right"></i>
+        <button onclick="toggleTerminal()" id="toggleTerminalBtn" class="text-xs text-slate-400 hover:text-emerald-400 flex items-center gap-1 transition">
+          <i class="ph-bold ph-terminal-window"></i> <span id="terminalBtnText">Show Agent Telemetry Log</span>
         </button>
       </div>
 
-      <!-- Horizontal Agent Pipeline Bar (Matches Image 3) -->
-      <div class="glass-card p-3 rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-2.5">
+      <!-- 4 Agent Status Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         
-        <!-- Step 1: Categorizer -->
-        <div id="agent-node-categorizer" class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 transition-all duration-300 flex items-center gap-2.5">
-          <div id="agent-icon-categorizer" class="h-8 w-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs border border-slate-700">
-            1
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Categorizer</span>
-              <span id="agent-badge-categorizer" class="text-[10px] text-slate-500 font-mono">Idle</span>
+        <!-- Agent 1: Categorizer -->
+        <div id="card-agent-categorizer" class="glass-card p-4 rounded-2xl border border-slate-800 transition duration-300 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div id="status-icon-categorizer" class="h-8 w-8 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center text-sm font-bold border border-slate-700">
+                🏷️
+              </div>
+              <span class="text-xs font-bold text-white">Categorizer Agent</span>
             </div>
-            <p id="agent-sub-categorizer" class="text-[10px] text-slate-400 truncate">Labels spend taxonomy</p>
+            <span id="status-badge-categorizer" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Idle</span>
           </div>
+          <p id="status-desc-categorizer" class="text-xs text-slate-400">
+            Categorizes merchants into 5 macro groups & tags recurring cadences.
+          </p>
         </div>
 
-        <!-- Step 2: Analyzer -->
-        <div id="agent-node-analyzer" class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 transition-all duration-300 flex items-center gap-2.5">
-          <div id="agent-icon-analyzer" class="h-8 w-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs border border-slate-700">
-            2
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Analyzer</span>
-              <span id="agent-badge-analyzer" class="text-[10px] text-slate-500 font-mono">Idle</span>
+        <!-- Agent 2: Behavior Analyzer -->
+        <div id="card-agent-analyzer" class="glass-card p-4 rounded-2xl border border-slate-800 transition duration-300 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div id="status-icon-analyzer" class="h-8 w-8 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center text-sm font-bold border border-slate-700">
+                🔍
+              </div>
+              <span class="text-xs font-bold text-white">Behavior & Anomaly</span>
             </div>
-            <p id="agent-sub-analyzer" class="text-[10px] text-slate-400 truncate">Spikes & ghost subs</p>
+            <span id="status-badge-analyzer" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Idle</span>
           </div>
+          <p id="status-desc-analyzer" class="text-xs text-slate-400">
+            Scans for dormant subscriptions, OTT sprawl, and velocity surges.
+          </p>
         </div>
 
-        <!-- Step 3: Forecaster -->
-        <div id="agent-node-forecaster" class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 transition-all duration-300 flex items-center gap-2.5">
-          <div id="agent-icon-forecaster" class="h-8 w-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs border border-slate-700">
-            3
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Forecaster</span>
-              <span id="agent-badge-forecaster" class="text-[10px] text-slate-500 font-mono">Idle</span>
+        <!-- Agent 3: Forecaster -->
+        <div id="card-agent-forecaster" class="glass-card p-4 rounded-2xl border border-slate-800 transition duration-300 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div id="status-icon-forecaster" class="h-8 w-8 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center text-sm font-bold border border-slate-700">
+                📈
+              </div>
+              <span class="text-xs font-bold text-white">Cashflow Forecaster</span>
             </div>
-            <p id="agent-sub-forecaster" class="text-[10px] text-slate-400 truncate">90-day cashflow balance</p>
+            <span id="status-badge-forecaster" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Idle</span>
           </div>
+          <p id="status-desc-forecaster" class="text-xs text-slate-400">
+            Projects 90-day daily cashflow balance taking into account fixed costs.
+          </p>
         </div>
 
-        <!-- Step 4: Advisor -->
-        <div id="agent-node-advisor" class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 transition-all duration-300 flex items-center gap-2.5">
-          <div id="agent-icon-advisor" class="h-8 w-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs border border-slate-700">
-            4
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-white">Advisor</span>
-              <span id="agent-badge-advisor" class="text-[10px] text-slate-500 font-mono">Idle</span>
+        <!-- Agent 4: Advisor -->
+        <div id="card-agent-advisor" class="glass-card p-4 rounded-2xl border border-slate-800 transition duration-300 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div id="status-icon-advisor" class="h-8 w-8 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center text-sm font-bold border border-slate-700">
+                💡
+              </div>
+              <span class="text-xs font-bold text-white">Advisor Agent</span>
             </div>
-            <p id="agent-sub-advisor" class="text-[10px] text-slate-400 truncate">Actions + decision trails</p>
+            <span id="status-badge-advisor" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Idle</span>
           </div>
+          <p id="status-desc-advisor" class="text-xs text-slate-400">
+            Synthesizes grounded actions with mathematical decision trails.
+          </p>
         </div>
 
       </div>
 
-      <!-- Execution Layout: Center Action Cards + Right Live Terminal -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-        
-        <!-- Left / Center: Unlocked Recommendation Action Cards (7 cols) -->
-        <div class="lg:col-span-7 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-              <i class="ph-bold ph-shield-check text-emerald-400"></i> Proactive Grounded Recommendations
-            </span>
-            <span id="recsCountBadge" class="text-[11px] font-mono text-emerald-400">4 actions ready</span>
-          </div>
-
-          <!-- Dynamic Cards Container (Matches Image 3) -->
-          <div id="recommendationsStream" class="grid grid-cols-1 sm:grid-cols-2 gap-3 min-h-[220px]">
-            <!-- Rendered dynamically -->
-            <div class="col-span-2 p-8 text-center text-slate-500 border border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center">
-              <i class="ph-bold ph-cpu text-3xl mb-2 text-slate-600"></i>
-              <p class="text-xs">Press <span class="text-emerald-400 font-bold">"Run FinPilot"</span> to trigger the multi-agent pipeline and generate auditable recommendations.</p>
-            </div>
-          </div>
+      <!-- Collapsible Live Agent Telemetry Terminal -->
+      <div id="agentTerminalWrapper" class="hidden glass-card rounded-2xl overflow-hidden border border-slate-800 transition duration-300">
+        <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono">
+          <span class="text-slate-300 flex items-center gap-1.5 font-bold">
+            <i class="ph-bold ph-terminal text-emerald-400"></i> &gt;_ Live Agent Telemetry & Mesh API Calls
+          </span>
+          <span class="text-[10px] text-emerald-400 font-semibold uppercase">Gateway: api.meshapi.ai/v1</span>
         </div>
-
-        <!-- Right: Live Agent Log Terminal (5 cols) (Matches Image 3) -->
-        <div class="lg:col-span-5 glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col h-[380px]">
-          <!-- Terminal Header -->
-          <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-              <div class="flex space-x-1.5">
-                <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-              </div>
-              <span class="text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5 pl-2">
-                <i class="ph-bold ph-terminal-window text-emerald-400"></i> &gt;_ Agent log
-              </span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-[10px] font-mono font-semibold text-emerald-400 uppercase">live</span>
-            </div>
-          </div>
-
-          <!-- Log Content Terminal Body -->
-          <div id="terminalLogBody" class="p-3.5 font-mono text-[11px] space-y-2 overflow-y-auto flex-1 custom-scroll bg-[#0a0f1d] text-slate-300">
-            <div class="text-slate-500">FinPilot Orchestrator initialized. Ready to execute.</div>
-            <div class="text-slate-500">Mesh API Gateway: https://api.meshapi.ai/v1 (rsk_...)</div>
-          </div>
-
-          <!-- Terminal Footer -->
-          <div class="px-3 py-1.5 bg-slate-900/80 border-t border-slate-800 text-[10px] font-mono text-slate-400 flex justify-between items-center">
-            <span>Gateway: <span class="text-emerald-400 font-semibold">Mesh API</span></span>
-            <span id="terminalTokCounter" class="text-indigo-400">Total Tokens: 3,240 tok</span>
-          </div>
+        <div id="terminalLogBody" class="p-3 font-mono text-[11px] space-y-1.5 max-h-48 overflow-y-auto custom-scroll bg-[#060a12] text-slate-300">
+          <div class="text-slate-500">System ready. Click "Run Multi-Agent Analysis" to execute.</div>
         </div>
-
       </div>
     </section>
 
-    <!-- ======================================================= -->
-    <!-- STEP 3: DEEP INSIGHTS ORGANIZED IN CLEAN TABS            -->
-    <!-- ======================================================= -->
-    <section class="space-y-4 pt-2">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+    <!-- ============================================== -->
+    <!-- STEP 3: GROUNDED INSIGHTS & DECISION SANDBOX   -->
+    <!-- ============================================== -->
+    <section id="step-insights" class="space-y-4 pt-2">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <span class="h-6 w-6 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/40">3</span>
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Deep Insights & Decision Sandbox</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Grounded Financial Insights</h2>
         </div>
-        
-        <!-- Navigation Tab Pills -->
-        <div class="flex items-center space-x-1 text-xs">
-          <button onclick="switchTab('tab-trajectory')" id="btn-tab-trajectory" class="tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold transition flex items-center gap-1.5">
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center space-x-1.5 text-xs overflow-x-auto pb-1 sm:pb-0">
+          <button onclick="switchTab('tab-trajectory')" id="btn-tab-trajectory" class="tab-btn px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-bold transition flex items-center gap-1.5">
             <i class="ph-bold ph-chart-line-up"></i> Trajectory & What-If
           </button>
-          <button onclick="switchTab('tab-radar')" id="btn-tab-radar" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
-            <i class="ph-bold ph-radar"></i> Anomaly Radar
+          <button onclick="switchTab('tab-radar')" id="btn-tab-radar" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
+            <i class="ph-bold ph-radar text-rose-400"></i> Anomaly Radar
           </button>
-          <button onclick="switchTab('tab-how-it-works')" id="btn-tab-how-it-works" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
-            <i class="ph-bold ph-tree-structure text-emerald-400"></i> How it works
+          <button onclick="switchTab('tab-copilot')" id="btn-tab-copilot" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
+            <i class="ph-bold ph-chat-centered-dots text-indigo-400"></i> Financial Copilot
           </button>
-          <button onclick="switchTab('tab-copilot')" id="btn-tab-copilot" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
-            <i class="ph-bold ph-chat-centered-dots"></i> Financial Copilot
+          <button onclick="switchTab('tab-digest')" id="btn-tab-digest" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
+            <i class="ph-bold ph-paper-plane-tilt text-sky-400"></i> Scheduled Digest
           </button>
-          <button onclick="switchTab('tab-digest')" id="btn-tab-digest" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
-            <i class="ph-bold ph-paper-plane-tilt"></i> Proactive Digest
+          <button onclick="switchTab('tab-how-it-works')" id="btn-tab-how-it-works" class="tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5">
+            <i class="ph-bold ph-tree-structure text-amber-400"></i> Architecture
           </button>
         </div>
       </div>
 
-      <!-- TAB 1: CASHFLOW TRAJECTORY & WHAT-IF SANDBOX -->
-      <div id="tab-trajectory" class="tab-content space-y-5">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Actionable Grounded Recommendations Cards Grid (Always prominent) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <i class="ph-bold ph-shield-check text-emerald-400"></i> Auditable Action Recommendations
+          </span>
+          <span id="recsSummaryBadge" class="text-xs text-emerald-400 font-mono">4 actions derived</span>
+        </div>
+
+        <div id="recommendationsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- TAB 1: TRAJECTORY & WHAT-IF SIMULATION -->
+      <div id="tab-trajectory" class="tab-content space-y-5 pt-2">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           
           <!-- Chart (8 cols) -->
           <div class="lg:col-span-8 glass-card p-5 rounded-2xl space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                  <i class="ph-bold ph-chart-line-up text-emerald-400"></i> 90-Day Forward Cashflow Trajectory & Decision Simulation
+                  <i class="ph-bold ph-chart-line-up text-emerald-400"></i> 90-Day Cashflow Trajectory & Counterfactual Overlay
                 </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Stochastic daily projected balance comparing Baseline vs Counterfactual What-If</p>
+                <p class="text-xs text-slate-400 mt-0.5">Stochastic daily projected balance comparing Baseline vs What-If simulated decision</p>
               </div>
               <div class="flex items-center gap-3 text-xs">
                 <span class="flex items-center gap-1 text-slate-300"><span class="h-2 w-2 rounded-full bg-indigo-500"></span> Baseline</span>
                 <span class="flex items-center gap-1 text-amber-300"><span class="h-2 w-2 rounded-full bg-amber-400"></span> Simulated</span>
-                <span class="flex items-center gap-1 text-rose-400"><span class="h-2 w-2 rounded-full bg-rose-500"></span> Buffer (₹25,000)</span>
+                <span class="flex items-center gap-1 text-rose-400"><span class="h-2 w-2 rounded-full bg-rose-500"></span> Buffer (₹25k)</span>
               </div>
             </div>
 
@@ -456,22 +335,22 @@
               <canvas id="cashflowChart"></canvas>
             </div>
 
-            <!-- Summary KPI Pill Bar -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-slate-800">
-              <div class="text-xs">
-                <span class="text-slate-400 block">Current Balance</span>
+            <!-- KPI Summary Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-800 text-xs">
+              <div>
+                <span class="text-slate-400 block">Current Liquid Balance</span>
                 <span id="kpiStartBal" class="text-sm font-bold text-white">₹75,000</span>
               </div>
-              <div class="text-xs">
-                <span class="text-slate-400 block">Projected 90-Day</span>
-                <span id="kpiProjBal" class="text-sm font-bold text-emerald-400">₹6,11,697</span>
+              <div>
+                <span class="text-slate-400 block">Projected 90-Day Balance</span>
+                <span id="kpiProjBal" class="text-sm font-bold text-emerald-400">₹6,11,698</span>
               </div>
-              <div class="text-xs">
-                <span class="text-slate-400 block">Monthly Burn</span>
+              <div>
+                <span class="text-slate-400 block">Monthly Burn Rate</span>
                 <span id="kpiBurnRate" class="text-sm font-bold text-white">₹58,783</span>
               </div>
-              <div class="text-xs">
-                <span class="text-slate-400 block">Savings Rate</span>
+              <div>
+                <span class="text-slate-400 block">Projected Savings Rate</span>
                 <span id="kpiSavingsRate" class="text-sm font-bold text-indigo-400">75.2%</span>
               </div>
             </div>
@@ -482,22 +361,22 @@
             <div>
               <div class="flex items-center justify-between">
                 <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-                  <i class="ph-bold ph-flask text-amber-400"></i> What-If Sandbox
+                  <i class="ph-bold ph-flask text-amber-400"></i> What-If Simulation Loop
                 </h3>
                 <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold uppercase">Counterfactual</span>
               </div>
-              <p class="text-xs text-slate-400 mt-1">Test financial decisions before committing.</p>
+              <p class="text-xs text-slate-400 mt-1">Answer "Can I afford this?" before committing money.</p>
 
-              <!-- Quick Presets -->
+              <!-- Presets -->
               <div class="mt-3 flex flex-wrap gap-1.5">
                 <button onclick="setSimPreset('Goa Vacation Trip', 'one_time_expense', 35000)" class="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
                   🏖️ ₹35k Goa Trip
                 </button>
                 <button onclick="setSimPreset('New Car EMI', 'recurring_expense', 14000)" class="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
-                  🚗 ₹14k/mo EMI
+                  🚗 ₹14k/mo Car EMI
                 </button>
-                <button onclick="setSimPreset('Cut Unused Subs', 'cost_reduction', 3500)" class="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition">
-                  ✂️ Save ₹3,500/mo
+                <button onclick="setSimPreset('Cancel Cult.fit & OTT', 'cost_reduction', 3500)" class="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition">
+                  ✂️ Cut ₹3,500/mo Subs
                 </button>
                 <button onclick="setSimPreset('MacBook on EMI', 'recurring_expense', 6500)" class="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
                   💻 ₹6.5k/mo Laptop
@@ -508,38 +387,38 @@
               <div class="space-y-3 mt-4">
                 <div>
                   <label class="text-[11px] font-semibold text-slate-300 block">Scenario / Purchase</label>
-                  <input type="text" id="simName" value="Goa Vacation Trip" class="w-full mt-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+                  <input type="text" id="simName" value="Goa Vacation Trip" class="w-full mt-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium" />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                   <div>
                     <label class="text-[11px] font-semibold text-slate-300 block">Type</label>
                     <select id="simType" class="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none">
-                      <option value="one_time_expense">One-Time Outlay</option>
+                      <option value="one_time_expense">One-Time Expense</option>
                       <option value="recurring_expense">Monthly Recurring</option>
                       <option value="cost_reduction">Cost Reduction</option>
                     </select>
                   </div>
                   <div>
                     <label class="text-[11px] font-semibold text-slate-300 block">Amount (₹)</label>
-                    <input type="number" id="simAmount" value="35000" class="w-full mt-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
+                    <input type="number" id="simAmount" value="35000" class="w-full mt-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500 font-bold" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Simulation Verdict Box -->
+            <!-- Verdict Box -->
             <div id="simVerdictBox" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5 text-xs">
               <div class="flex items-center justify-between">
-                <span class="text-slate-400 font-medium">Verdict:</span>
+                <span class="text-slate-400 font-medium">Simulation Verdict:</span>
                 <span id="simVerdictBadge" class="font-bold text-emerald-400 uppercase tracking-wider">AFFORDABLE</span>
               </div>
               <p id="simVerdictText" class="text-slate-300 text-[11px]">
-                Your ₹35,000 trip leaves a safe cushion well above your ₹25,000 buffer.
+                Your ₹35,000 trip leaves a safe cushion well above your ₹25,000 emergency buffer.
               </p>
             </div>
 
-            <button onclick="runSimulation()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition flex items-center justify-center gap-1.5">
-              <i class="ph-bold ph-lightning"></i> Replay Simulation
+            <button onclick="runSimulation()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/25 transition flex items-center justify-center gap-1.5">
+              <i class="ph-bold ph-lightning"></i> Replay What-If Decision
             </button>
           </div>
 
@@ -547,7 +426,7 @@
       </div>
 
       <!-- TAB 2: BEHAVIORAL ANOMALY RADAR -->
-      <div id="tab-radar" class="tab-content hidden space-y-4">
+      <div id="tab-radar" class="tab-content hidden space-y-4 pt-2">
         <div class="glass-card p-5 rounded-2xl space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -565,215 +444,38 @@
         </div>
       </div>
 
-      <!-- TAB 3: "HOW IT WORKS" INTERACTIVE ARCHITECTURE GRAPH (IMAGE 4 REPRODUCTION) -->
-      <div id="tab-how-it-works" class="tab-content hidden space-y-4">
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-            <div>
-              <h3 class="text-base font-bold text-white flex items-center gap-2">
-                <i class="ph-bold ph-tree-structure text-emerald-400 text-lg"></i> How it works — Multi-Agent Architecture
-              </h3>
-              <p class="text-xs text-slate-400 mt-0.5">
-                Five small agents, one shared database, and a scheduler. Hover any node to see what it does; press Play to trace a real run.
-              </p>
-            </div>
-            <div class="flex items-center gap-2 text-xs">
-              <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono">
-                Mesh API Gateway: one key, many models
-              </span>
-            </div>
-          </div>
-
-          <!-- Interactive SVG Diagram Node Map (Matches Image 4) -->
-          <div class="relative w-full overflow-x-auto custom-scroll py-4 bg-[#0a0f1d] rounded-xl border border-slate-800/80 p-4">
-            <svg class="w-[960px] h-[480px] mx-auto select-none" viewBox="0 0 960 480">
-              <defs>
-                <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#10b981" />
-                  <stop offset="100%" stop-color="#059669" />
-                </linearGradient>
-                <linearGradient id="gradIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#6366f1" />
-                  <stop offset="100%" stop-color="#4f46e5" />
-                </linearGradient>
-              </defs>
-
-              <!-- Connection Lines -->
-              <!-- Row 1: Spends -> Categorizer -> DB -->
-              <path d="M 140 70 L 210 70" stroke="#334155" stroke-width="2" stroke-dasharray="4,4" />
-              <path d="M 330 70 L 330 140" stroke="#10b981" stroke-width="2" />
-              <path d="M 330 200 L 400 200 L 400 70 L 420 70" stroke="#334155" stroke-width="2" />
-              <!-- DB to Analyzer -->
-              <path d="M 400 200 L 420 70" stroke="#334155" stroke-width="2" />
-              <!-- Analyzer to Forecaster -->
-              <path d="M 540 70 L 580 70" stroke="#10b981" stroke-width="2" />
-              <!-- Forecaster to Advisor -->
-              <path d="M 700 70 L 740 70" stroke="#10b981" stroke-width="2" />
-              <!-- Advisor to Recs -->
-              <path d="M 800 100 L 800 170" stroke="#10b981" stroke-width="2" />
-              <!-- What-if to Simulator to Verdict -->
-              <path d="M 470 290 L 530 290" stroke="#334155" stroke-width="2" />
-              <path d="M 650 290 L 710 290" stroke="#10b981" stroke-width="2" />
-              <path d="M 640 100 L 590 260" stroke="#6366f1" stroke-width="2" stroke-dasharray="4,4" />
-              <!-- Scheduler to Weekly Digest -->
-              <path d="M 310 410 L 380 410" stroke="#334155" stroke-width="2" />
-              <!-- Advisor & Recs to Audit Log -->
-              <path d="M 770 230 L 650 410" stroke="#334155" stroke-width="2" stroke-dasharray="4,4" />
-
-              <!-- Nodes (Matching Image 4) -->
-              
-              <!-- 1. Your Transactions -->
-              <g transform="translate(30, 40)" class="cursor-pointer" onclick="showNodeDetail('transactions')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#10b981" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">1</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Your transactions</text>
-                <text x="28" y="44" fill="#10b981" font-size="10" font-family="sans-serif">CSV upload ✓</text>
-              </g>
-
-              <!-- 2. Categorizer Agent -->
-              <g id="svg-node-categorizer" transform="translate(210, 40)" class="cursor-pointer" onclick="showNodeDetail('categorizer')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#10b981" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">2</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Categorizer</text>
-                <text x="28" y="44" fill="#10b981" font-size="10" font-family="sans-serif">labels each spend ✓</text>
-              </g>
-
-              <!-- 3. Transactions DB -->
-              <g transform="translate(210, 150)" class="cursor-pointer" onclick="showNodeDetail('db')">
-                <rect width="140" height="60" rx="12" fill="#131d33" stroke="#10b981" stroke-width="2" stroke-dasharray="4,4" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">3</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Transactions DB</text>
-                <text x="28" y="44" fill="#94a3b8" font-size="10" font-family="sans-serif">SQLite / SQLAlchemy</text>
-              </g>
-
-              <!-- 4. Analyzer Agent -->
-              <g id="svg-node-analyzer" transform="translate(410, 40)" class="cursor-pointer" onclick="showNodeDetail('analyzer')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#334155" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">4</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Analyzer</text>
-                <text x="28" y="44" fill="#94a3b8" font-size="10" font-family="sans-serif">finds patterns & spikes</text>
-              </g>
-
-              <!-- 5. Forecaster Agent -->
-              <g id="svg-node-forecaster" transform="translate(570, 40)" class="cursor-pointer" onclick="showNodeDetail('forecaster')">
-                <rect width="140" height="60" rx="12" fill="#131d33" stroke="#334155" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">5</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Forecaster</text>
-                <text x="28" y="44" fill="#fbbf24" font-size="10" font-family="sans-serif">projects next 90 days</text>
-              </g>
-
-              <!-- 6. Advisor Agent -->
-              <g id="svg-node-advisor" transform="translate(740, 40)" class="cursor-pointer" onclick="showNodeDetail('advisor')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#334155" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">6</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Advisor</text>
-                <text x="28" y="44" fill="#10b981" font-size="10" font-family="sans-serif">specific actions + why</text>
-              </g>
-
-              <!-- 7. Recommendations -->
-              <g transform="translate(730, 170)" class="cursor-pointer" onclick="showNodeDetail('recs')">
-                <rect width="140" height="60" rx="12" fill="#131d33" stroke="#10b981" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">7</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Recommendations</text>
-                <text x="28" y="44" fill="#94a3b8" font-size="10" font-family="sans-serif">you accept or skip</text>
-              </g>
-
-              <!-- 8. Your what-if question -->
-              <g transform="translate(340, 260)" class="cursor-pointer" onclick="showNodeDetail('whatif')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#334155" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">8</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">What-if question</text>
-                <text x="28" y="44" fill="#f43f5e" font-size="10" font-family="sans-serif">e.g. ₹35k Goa trip?</text>
-              </g>
-
-              <!-- 9. Simulator -->
-              <g transform="translate(520, 260)" class="cursor-pointer" onclick="showNodeDetail('simulator')">
-                <rect width="140" height="60" rx="12" fill="#131d33" stroke="#6366f1" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">9</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Simulator</text>
-                <text x="28" y="44" fill="#a5b4fc" font-size="10" font-family="sans-serif">replays forecast + decision</text>
-              </g>
-
-              <!-- 10. Verdict -->
-              <g transform="translate(710, 260)" class="cursor-pointer" onclick="showNodeDetail('verdict')">
-                <rect width="120" height="60" rx="12" fill="#131d33" stroke="#10b981" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">10</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Verdict</text>
-                <text x="28" y="44" fill="#10b981" font-size="10" font-family="sans-serif">yes / no / yes-but</text>
-              </g>
-
-              <!-- 11. Scheduler -->
-              <g transform="translate(180, 380)" class="cursor-pointer" onclick="showNodeDetail('scheduler')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#334155" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">11</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Scheduler</text>
-                <text x="28" y="44" fill="#94a3b8" font-size="10" font-family="sans-serif">APScheduler / cron</text>
-              </g>
-
-              <!-- 12. Weekly Digest -->
-              <g transform="translate(380, 380)" class="cursor-pointer" onclick="showNodeDetail('digest')">
-                <rect width="130" height="60" rx="12" fill="#131d33" stroke="#0ea5e9" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">12</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Weekly digest</text>
-                <text x="28" y="44" fill="#38bdf8" font-size="10" font-family="sans-serif">Telegram / email</text>
-              </g>
-
-              <!-- 13. Audit Log -->
-              <g transform="translate(560, 380)" class="cursor-pointer" onclick="showNodeDetail('audit')">
-                <rect width="120" height="60" rx="12" fill="#131d33" stroke="#f59e0b" stroke-width="1.5" />
-                <text x="12" y="24" fill="#94a3b8" font-size="10" font-family="sans-serif">13</text>
-                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Audit log</text>
-                <text x="28" y="44" fill="#fbbf24" font-size="10" font-family="sans-serif">why each tip</text>
-              </g>
-
-              <!-- Center Banner: Mesh API Gateway -->
-              <g transform="translate(320, 185)">
-                <rect width="320" height="34" rx="8" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
-                <text x="16" y="21" fill="#c7d2fe" font-size="11" font-weight="bold" font-family="sans-serif">Mesh API gateway: one key, many models</text>
-              </g>
-
-            </svg>
-          </div>
-
-          <!-- Dynamic Node Explanation Card -->
-          <div id="nodeDetailBox" class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300">
-            <span class="text-emerald-400 font-bold">Interactive Flow:</span> Hover or click any node above to inspect its multi-agent role, tools, and data dependencies.
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 4: FINANCIAL COPILOT (AI CHAT) -->
-      <div id="tab-copilot" class="tab-content hidden space-y-4">
+      <!-- TAB 3: FINANCIAL COPILOT (CHAT) -->
+      <div id="tab-copilot" class="tab-content hidden space-y-4 pt-2">
         <div class="glass-card p-5 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div>
               <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="ph-bold ph-chat-centered-dots text-emerald-400"></i> Free-Form Grounded Financial Copilot
+                <i class="ph-bold ph-chat-centered-dots text-indigo-400"></i> Free-Form Conversational Financial Copilot
               </h3>
               <p class="text-xs text-slate-400 mt-0.5">Ask questions grounded in your real transactions, trajectory, and goals</p>
             </div>
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              Grounded in SQLite DB
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 font-mono">
+              Mesh API • openai/gpt-4o-mini
             </span>
           </div>
 
-          <!-- Quick Suggestion Buttons -->
+          <!-- Quick Query Buttons -->
           <div class="flex flex-wrap gap-2">
             <button onclick="askCopilot('Can I afford a ₹35,000 Goa trip next month?')" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
               "Can I afford a ₹35k Goa trip next month?"
             </button>
-            <button onclick="askCopilot('Why is my dining out spend accelerating?')" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
-              "Why is my dining out spend accelerating?"
+            <button onclick="askCopilot('Why is my food delivery spend accelerating?')" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+              "Why is my food delivery spend accelerating?"
             </button>
-            <button onclick="askCopilot('How can I reach my emergency fund goal faster?')" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+            <button onclick="askCopilot('How can I reach my ₹1,50,000 emergency fund faster?')" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
               "How can I reach my emergency fund faster?"
             </button>
           </div>
 
-          <!-- Chat History Window -->
+          <!-- Chat Window -->
           <div id="copilotChatHistory" class="p-4 rounded-xl bg-slate-900 border border-slate-800 h-64 overflow-y-auto space-y-3 text-xs custom-scroll">
-            <div class="p-3 rounded-xl bg-slate-800/80 text-slate-200 border border-slate-700/80 max-w-[85%]">
-              Hello! I am your FinPilot Copilot. I have analyzed your transactions and cashflow trajectory. How can I help you plan your finances today?
+            <div class="p-3 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 max-w-[85%]">
+              Hello! I am your FinPilot Copilot. I have analyzed your transactions and forward trajectory. Ask me anything about your money, goals, or planned purchases.
             </div>
           </div>
 
@@ -787,23 +489,23 @@
         </div>
       </div>
 
-      <!-- TAB 5: PROACTIVE DIGEST PREVIEW -->
-      <div id="tab-digest" class="tab-content hidden space-y-4">
+      <!-- TAB 4: SCHEDULED PROACTIVE DIGEST -->
+      <div id="tab-digest" class="tab-content hidden space-y-4 pt-2">
         <div class="glass-card p-5 rounded-2xl space-y-4">
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div>
               <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="ph-bold ph-paper-plane-tilt text-indigo-400"></i> Scheduled Background Proactive Digest
+                <i class="ph-bold ph-paper-plane-tilt text-sky-400"></i> Scheduled Background Proactive Digest
               </h3>
-              <p class="text-xs text-slate-400 mt-0.5">Automated periodic financial insights dispatched via Telegram & Email (APScheduler)</p>
+              <p class="text-xs text-slate-400 mt-0.5">Automated weekly digest dispatched in the background by APScheduler (Telegram & Email)</p>
             </div>
             <button onclick="triggerDigestNow()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition flex items-center gap-1.5">
               <i class="ph-bold ph-lightning"></i> Dispatch Digest Now
             </button>
           </div>
 
-          <!-- Telegram / Email Style Mockup Card -->
-          <div class="max-w-xl mx-auto p-5 rounded-2xl bg-[#17212b] border border-slate-700 text-slate-200 shadow-xl space-y-3">
+          <!-- Telegram/Email Preview Card -->
+          <div class="max-w-xl mx-auto p-5 rounded-2xl bg-[#141d2e] border border-slate-700 text-slate-200 shadow-xl space-y-3">
             <div class="flex items-center justify-between border-b border-slate-700 pb-2">
               <div class="flex items-center gap-2">
                 <div class="h-8 w-8 rounded-full bg-emerald-500 text-black font-black flex items-center justify-center text-xs">
@@ -811,23 +513,23 @@
                 </div>
                 <div>
                   <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                    FinPilot Bot <i class="ph-fill ph-seal-check text-sky-400"></i>
+                    FinPilot Scheduled Digest <i class="ph-fill ph-seal-check text-sky-400"></i>
                   </div>
-                  <div class="text-[10px] text-slate-400">Scheduled Weekly Digest • 09:00 AM</div>
+                  <div class="text-[10px] text-slate-400">Weekly Scheduled Delivery • 09:00 AM</div>
                 </div>
               </div>
-              <span id="digestHealthBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
-                Health: 88/100
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+                Health: 100/100
               </span>
             </div>
 
-            <!-- Digest Body -->
+            <!-- Content -->
             <div class="space-y-2 text-xs">
               <p id="digestMainInsight" class="leading-relaxed">
                 90-Day Trajectory: You are on path to reach ₹6,11,697.80, but Subscription Sprawl (Cult.fit + 4 streaming services) is siphoning ₹3,925/mo without regular usage.
               </p>
               
-              <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-700/80 space-y-1">
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-700/80 space-y-1">
                 <div class="text-[11px] font-bold text-emerald-400">Recommended 1-Click Action:</div>
                 <div id="digestActionText" class="text-[11px] text-slate-300">
                   Cancel Cult.fit dormant pass & pause 2 streaming services to redirect ₹3,500/mo into emergency SIP.
@@ -836,10 +538,160 @@
             </div>
 
             <div class="pt-2 flex justify-end">
-              <button onclick="switchTab('tab-trajectory'); setSimPreset('Cut Unused Subs', 'cost_reduction', 3500);" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs transition">
-                Simulate Impact in Sandbox
+              <button onclick="switchTab('tab-trajectory'); setSimPreset('Cancel Cult.fit & OTT', 'cost_reduction', 3500);" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs transition">
+                Simulate in Sandbox
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: ARCHITECTURE GRAPH (HOW IT WORKS) -->
+      <div id="tab-how-it-works" class="tab-content hidden space-y-4 pt-2">
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="ph-bold ph-tree-structure text-emerald-400 text-lg"></i> System Architecture — Multi-Agent Cooperation
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">
+                Specialized cooperating agents orchestrated via LangGraph, powered by Mesh API gateway.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono">
+                Mesh API: https://api.meshapi.ai/v1
+              </span>
+            </div>
+          </div>
+
+          <!-- SVG Visual Map -->
+          <div class="relative w-full overflow-x-auto custom-scroll py-4 bg-[#060a12] rounded-xl border border-slate-800 p-4">
+            <svg class="w-[960px] h-[440px] mx-auto select-none" viewBox="0 0 960 440">
+              <!-- Connections -->
+              <path d="M 140 70 L 210 70" stroke="#334155" stroke-width="2" stroke-dasharray="4,4" />
+              <path d="M 330 70 L 330 140" stroke="#10b981" stroke-width="2" />
+              <path d="M 330 200 L 410 70" stroke="#334155" stroke-width="2" />
+              <path d="M 540 70 L 580 70" stroke="#10b981" stroke-width="2" />
+              <path d="M 700 70 L 740 70" stroke="#10b981" stroke-width="2" />
+              <path d="M 800 100 L 800 170" stroke="#10b981" stroke-width="2" />
+              <path d="M 470 280 L 530 280" stroke="#334155" stroke-width="2" />
+              <path d="M 650 280 L 710 280" stroke="#10b981" stroke-width="2" />
+              <path d="M 640 100 L 590 250" stroke="#6366f1" stroke-width="2" stroke-dasharray="4,4" />
+              <path d="M 310 370 L 380 370" stroke="#334155" stroke-width="2" />
+              <path d="M 770 230 L 650 370" stroke="#334155" stroke-width="2" stroke-dasharray="4,4" />
+
+              <!-- Nodes -->
+              <!-- 1. CSV Upload -->
+              <g transform="translate(30, 40)">
+                <rect width="130" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">1</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Your transactions</text>
+                <text x="28" y="44" fill="#10b981" font-size="10">CSV upload ✓</text>
+              </g>
+
+              <!-- 2. Categorizer -->
+              <g transform="translate(210, 40)">
+                <rect width="130" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">2</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Categorizer</text>
+                <text x="28" y="44" fill="#10b981" font-size="10">labels spend ✓</text>
+              </g>
+
+              <!-- 3. Transactions DB -->
+              <g transform="translate(210, 140)">
+                <rect width="140" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="2" stroke-dasharray="4,4" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">3</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Transactions DB</text>
+                <text x="28" y="44" fill="#94a3b8" font-size="10">SQLite / SQLAlchemy</text>
+              </g>
+
+              <!-- 4. Analyzer -->
+              <g transform="translate(410, 40)">
+                <rect width="130" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">4</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Analyzer</text>
+                <text x="28" y="44" fill="#94a3b8" font-size="10">patterns & spikes</text>
+              </g>
+
+              <!-- 5. Forecaster -->
+              <g transform="translate(570, 40)">
+                <rect width="140" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">5</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Forecaster</text>
+                <text x="28" y="44" fill="#fbbf24" font-size="10">90-day balance</text>
+              </g>
+
+              <!-- 6. Advisor -->
+              <g transform="translate(740, 40)">
+                <rect width="130" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">6</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Advisor</text>
+                <text x="28" y="44" fill="#10b981" font-size="10">actions + why</text>
+              </g>
+
+              <!-- 7. Recommendations -->
+              <g transform="translate(730, 160)">
+                <rect width="140" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">7</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Recommendations</text>
+                <text x="28" y="44" fill="#94a3b8" font-size="10">accept or dismiss</text>
+              </g>
+
+              <!-- 8. What-if question -->
+              <g transform="translate(340, 250)">
+                <rect width="130" height="60" rx="12" fill="#131e36" stroke="#334155" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">8</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">What-if question</text>
+                <text x="28" y="44" fill="#f43f5e" font-size="10">e.g. ₹35k Goa trip?</text>
+              </g>
+
+              <!-- 9. Simulator -->
+              <g transform="translate(520, 250)">
+                <rect width="140" height="60" rx="12" fill="#131e36" stroke="#6366f1" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">9</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Simulator</text>
+                <text x="28" y="44" fill="#a5b4fc" font-size="10">counterfactual loop</text>
+              </g>
+
+              <!-- 10. Verdict -->
+              <g transform="translate(710, 250)">
+                <rect width="120" height="60" rx="12" fill="#131e36" stroke="#10b981" stroke-width="1.5" />
+                <text x="12" y="24" fill="#94a3b8" font-size="10">10</text>
+                <text x="28" y="24" fill="#ffffff" font-size="11" font-weight="bold">Verdict</text>
+                <text x="28" y="44" fill="#10b981" font-size="10">yes / no / caution</text>
+              </g>
+
+              <!-- 11. Scheduler -->
+              <g transform="translate(180, 350)">
+                <rect width="130" height="55" rx="12" fill="#131e36" stroke="#334155" stroke-width="1.5" />
+                <text x="12" y="22" fill="#94a3b8" font-size="10">11</text>
+                <text x="28" y="22" fill="#ffffff" font-size="11" font-weight="bold">Scheduler</text>
+                <text x="28" y="40" fill="#94a3b8" font-size="10">APScheduler</text>
+              </g>
+
+              <!-- 12. Weekly Digest -->
+              <g transform="translate(380, 350)">
+                <rect width="130" height="55" rx="12" fill="#131e36" stroke="#0ea5e9" stroke-width="1.5" />
+                <text x="12" y="22" fill="#94a3b8" font-size="10">12</text>
+                <text x="28" y="22" fill="#ffffff" font-size="11" font-weight="bold">Weekly digest</text>
+                <text x="28" y="40" fill="#38bdf8" font-size="10">Telegram / email</text>
+              </g>
+
+              <!-- 13. Audit Log -->
+              <g transform="translate(560, 350)">
+                <rect width="120" height="55" rx="12" fill="#131e36" stroke="#f59e0b" stroke-width="1.5" />
+                <text x="12" y="22" fill="#94a3b8" font-size="10">13</text>
+                <text x="28" y="22" fill="#ffffff" font-size="11" font-weight="bold">Audit log</text>
+                <text x="28" y="40" fill="#fbbf24" font-size="10">why each tip</text>
+              </g>
+
+              <!-- Center Gateway Pill -->
+              <g transform="translate(320, 180)">
+                <rect width="320" height="34" rx="8" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+                <text x="16" y="21" fill="#c7d2fe" font-size="11" font-weight="bold">Mesh API gateway: one key, many models</text>
+              </g>
+            </svg>
           </div>
         </div>
       </div>
@@ -849,10 +701,10 @@
   </main>
 
   <!-- ============================================== -->
-  <!-- AUDITABLE DECISION TRAIL MODAL (WHY? DRAWER)   -->
+  <!-- AUDITABLE DECISION TRAIL MODAL (WHY? DIALOG)   -->
   <!-- ============================================== -->
   <div id="decisionTrailModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="glass-card max-w-lg w-full p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-4 transform transition-all">
+    <div class="glass-card max-w-lg w-full p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <div class="h-8 w-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 font-bold">
@@ -887,7 +739,7 @@
 
         <div>
           <span class="text-slate-400 font-semibold block text-[11px]">Auditable Decision Trail & Mathematical Proof</span>
-          <div id="modalRecTrail" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 font-mono text-[11px] leading-relaxed mt-1">
+          <div id="modalRecTrail" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 font-mono text-[11px] leading-relaxed mt-1">
           </div>
         </div>
 
@@ -897,7 +749,7 @@
             <span id="modalRecTrigger" class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono text-[10px] border border-indigo-500/30">
               GHOST_SUBSCRIPTION
             </span>
-            <span id="modalRecConfidence" class="text-slate-400 text-[10px]">Confidence: 95%</span>
+            <span id="modalRecConfidence" class="text-slate-400 text-[10px]">Confidence: 96%</span>
           </div>
         </div>
       </div>
@@ -910,39 +762,13 @@
     </div>
   </div>
 
-  <!-- JavaScript Application Logic -->
+  <!-- JavaScript -->
   <script>
-    // State
-    let currentPersona = 'aarav';
     let globalForecast = null;
     let globalRecommendations = [];
     let chartInstance = null;
     let isRunning = false;
-    let isPaused = false;
-    let execMode = 'auto'; // 'auto' | 'step'
-    let execSpeed = 1;     // 1 | 2
-    let currentAgentStep = 0; // 0: Categorizer, 1: Analyzer, 2: Forecaster, 3: Advisor
-
-    const PERSONAS_DATA = {
-      'aarav': {
-        name: 'Aarav', age: '26', city: 'Bengaluru', role: 'Software engineer',
-        income: '₹1,15,000/mo', savings: '₹65,000', goal: '₹1,50,000',
-        goalDesc: 'Emergency Reserve Fund • by Dec 2026',
-        goalPercent: 53, fileName: 'aarav_jul_sep.csv', rows: '56 rows'
-      },
-      'priya': {
-        name: 'Priya', age: '29', city: 'Pune', role: 'Freelance designer',
-        income: '₹1,45,000/mo', savings: '₹1,10,000', goal: '₹2,70,000',
-        goalDesc: '6-Month Freelance Runway • by Jan 2027',
-        goalPercent: 41, fileName: 'priya_jul_sep.csv', rows: '44 rows'
-      },
-      'sharma': {
-        name: 'The Sharma family', age: 'Rohan & Meera', city: 'Delhi', role: 'Dual Corporate',
-        income: '₹2,10,000/mo', savings: '₹95,000', goal: '₹1,80,000',
-        goalDesc: 'School Fees (due April) • by Apr 2027',
-        goalPercent: 53, fileName: 'sharma_jul_sep.csv', rows: '42 rows'
-      }
-    };
+    let terminalOpen = false;
 
     // Initialize Chart
     function initChart(trajectory = [], simulated = []) {
@@ -1021,86 +847,70 @@
       });
     }
 
-    // Select Persona
-    async function selectPersona(personaId) {
-      currentPersona = personaId;
-      document.querySelectorAll('.persona-card').forEach(c => {
-        c.classList.remove('border-2', 'border-emerald-500', 'shadow-md', 'shadow-emerald-500/10');
-        c.classList.add('border-slate-800');
-      });
-      const selected = document.getElementById(`persona-card-${personaId}`);
-      if (selected) {
-        selected.classList.add('border-2', 'border-emerald-500', 'shadow-md', 'shadow-emerald-500/10');
-        selected.classList.remove('border-slate-800');
-      }
-
-      const p = PERSONAS_DATA[personaId];
-      if (p) {
-        document.getElementById('profileIncome').innerText = p.income;
-        document.getElementById('profileSavings').innerText = p.savings;
-        document.getElementById('profileGoal').innerText = p.goal;
-        document.getElementById('profileGoalDesc').innerText = p.goalDesc;
-        document.getElementById('goalPercentText').innerText = p.goalPercent + '%';
-        document.getElementById('activeFileName').innerText = p.fileName;
-        document.getElementById('activeFileRows').innerText = p.rows;
-
-        // Update stroke dashoffset
-        const circle = document.getElementById('goalRingCircle');
-        const circumference = 2 * Math.PI * 32; // ~201.06
-        const offset = circumference - (p.goalPercent / 100) * circumference;
-        circle.style.strokeDashoffset = offset;
-      }
-
-      appendTerminalLog(`Selected persona: ${PERSONAS_DATA[personaId].name}. Loading transactions...`, 'info', 'no LLM');
+    // Load Sample Data
+    async function loadSampleData() {
       try {
-        await fetch(`/api/personas/${personaId}/load`, { method: 'POST' });
-        appendTerminalLog(`Loaded ${p.rows} from ${p.fileName} into SQLite DB. Ready for run.`, 'info', 'no LLM');
+        appendTerminalLog('Loading sample Indian techie transactions...', 'info');
+        const res = await fetch('/api/transactions/load-sample', { method: 'POST' });
+        const data = await res.json();
+        document.getElementById('loadedFileName').innerText = 'sample_transactions.csv';
+        document.getElementById('loadedRowCount').innerText = `${data.count || 56} transactions loaded`;
+        appendTerminalLog(`Successfully loaded ${data.count || 56} transactions into SQLite DB.`, 'llm', 'Ready');
+        await runPipeline();
       } catch (e) {
-        console.error("Load persona failed", e);
+        alert("Failed to load sample: " + e);
       }
     }
 
-    // Append Log to Terminal
-    function appendTerminalLog(message, type = 'info', badge = null) {
-      const term = document.getElementById('terminalLogBody');
-      const time = new Date().toTimeString().split(' ')[0];
-      const div = document.createElement('div');
-      div.className = 'flex items-start justify-between gap-2 py-0.5';
+    // Upload custom CSV
+    async function uploadCSV(input) {
+      if (!input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
 
-      let msgColor = 'text-slate-300';
-      if (type === 'llm') msgColor = 'text-emerald-300';
-      if (type === 'warn') msgColor = 'text-amber-300';
+      appendTerminalLog(`Uploading CSV: ${file.name}...`, 'info');
 
-      div.innerHTML = `
-        <div class="flex-1">
-          <span class="text-slate-500">[${time}]</span> <span class="${msgColor}">${message}</span>
-        </div>
-        ${badge ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap">${badge}</span>` : ''}
-      `;
-      term.appendChild(div);
-      term.scrollTop = term.scrollHeight;
+      try {
+        const res = await fetch('/api/transactions/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        document.getElementById('loadedFileName').innerText = file.name;
+        document.getElementById('loadedRowCount').innerText = `${data.count} transactions loaded`;
+        appendTerminalLog(`Ingested ${data.count} rows. Running multi-agent analysis...`, 'llm', 'Ingested');
+        await runPipeline();
+      } catch (e) {
+        alert("Upload failed: " + e);
+      }
     }
 
-    // Start Execution
-    async function startExecution() {
+    // Run Full Pipeline
+    async function runPipeline() {
       if (isRunning) return;
       isRunning = true;
-      isPaused = false;
-      document.getElementById('runFinPilotBtn').innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> Executing Agents...`;
+      const btn = document.getElementById('runPipelineBtn');
+      btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> Executing Agents...`;
 
-      appendTerminalLog('Starting FinPilot multi-agent execution pipeline...', 'info', 'LangGraph');
+      // Animate agent status
+      resetAgentCards();
+      setAgentRunning('categorizer');
+
+      const bal = parseFloat(document.getElementById('startBalanceInput').value) || 75000;
 
       try {
-        const res = await fetch('/api/pipeline/run', { method: 'POST' });
+        appendTerminalLog('Starting LangGraph StateGraph pipeline...', 'info', 'LangGraph');
+        const res = await fetch(`/api/pipeline/run?balance=${bal}`, { method: 'POST' });
         const data = await res.json();
 
-        // Animate through agents
-        await animatePipelineStages(data);
+        // Sequential animation through agents
+        await animateAgentsSequence(data);
 
         globalForecast = data.forecast;
         globalRecommendations = data.recommendations || [];
 
-        // Render everything
+        // Render Outputs
         renderRecommendations(globalRecommendations);
         renderAnomalies(data.anomalies || []);
         initChart(data.forecast.trajectory_points || []);
@@ -1108,170 +918,111 @@
         // Update KPIs
         if (data.forecast) {
           document.getElementById('kpiStartBal').innerText = '₹' + (data.forecast.start_balance || 75000).toLocaleString();
-          document.getElementById('kpiProjBal').innerText = '₹' + (data.forecast.projected_end_balance || 611697).toLocaleString();
+          document.getElementById('kpiProjBal').innerText = '₹' + (data.forecast.projected_end_balance || 611698).toLocaleString();
           document.getElementById('kpiBurnRate').innerText = '₹' + (data.forecast.monthly_burn_rate || 58783).toLocaleString();
           document.getElementById('kpiSavingsRate').innerText = (data.forecast.projected_savings_rate || 75.2) + '%';
         }
 
-        appendTerminalLog('✓ Multi-agent pipeline finished successfully. Insights updated.', 'llm', 'Complete');
+        appendTerminalLog('✓ Analysis complete. All grounded recommendations synthesized.', 'llm', 'Done');
       } catch (e) {
-        appendTerminalLog('Execution failed: ' + e, 'warn');
+        appendTerminalLog('Execution error: ' + e, 'warn');
       } finally {
         isRunning = false;
-        document.getElementById('runFinPilotBtn').innerHTML = `<i class="ph-fill ph-play text-base"></i> Run FinPilot`;
+        btn.innerHTML = `<i class="ph-fill ph-play text-base"></i> Run Multi-Agent Analysis`;
       }
     }
 
-    async function animatePipelineStages(data) {
+    async function animateAgentsSequence(data) {
       const agents = ['categorizer', 'analyzer', 'forecaster', 'advisor'];
       const logs = data.agent_logs || [];
-      const delay = execSpeed === 2 ? 400 : 700;
 
       for (let i = 0; i < agents.length; i++) {
         const ag = agents[i];
-        setAgentActive(ag);
+        setAgentRunning(ag);
 
-        // Stream related logs
         const agLogs = logs.filter(l => l.agent === ag);
         for (const l of agLogs) {
           appendTerminalLog(l.message, l.type, l.badge);
-          await sleep(delay / 2);
+          await sleep(250);
         }
 
         setAgentCompleted(ag, data.agent_status ? data.agent_status[ag] : null);
-        await sleep(delay);
+        await sleep(350);
       }
     }
 
-    function setAgentActive(ag) {
-      const node = document.getElementById(`agent-node-${ag}`);
-      if (node) {
-        node.classList.add('agent-glow-running');
-        node.classList.remove('border-slate-800');
-        const badge = document.getElementById(`agent-badge-${ag}`);
+    function setAgentRunning(ag) {
+      const card = document.getElementById(`card-agent-${ag}`);
+      if (card) {
+        card.classList.add('agent-active');
+        const badge = document.getElementById(`status-badge-${ag}`);
         if (badge) {
-          badge.className = 'text-[10px] text-emerald-400 font-mono animate-pulse';
-          badge.innerText = 'Running...';
+          badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold animate-pulse';
+          badge.innerText = 'Analyzing...';
         }
       }
     }
 
-    function setAgentCompleted(ag, statusInfo) {
-      const node = document.getElementById(`agent-node-${ag}`);
-      if (node) {
-        node.classList.remove('agent-glow-running');
-        node.classList.add('border-emerald-600/70', 'bg-emerald-950/20');
-        const icon = document.getElementById(`agent-icon-${ag}`);
-        if (icon) {
-          icon.className = 'h-8 w-8 rounded-lg bg-emerald-500 text-black font-bold text-xs flex items-center justify-center';
-          icon.innerHTML = '<i class="ph-bold ph-check text-sm"></i>';
-        }
-        const badge = document.getElementById(`agent-badge-${ag}`);
+    function setAgentCompleted(ag, info) {
+      const card = document.getElementById(`card-agent-${ag}`);
+      if (card) {
+        card.classList.remove('agent-active');
+        card.classList.add('border-emerald-600/50', 'bg-emerald-950/10');
+        const badge = document.getElementById(`status-badge-${ag}`);
         if (badge) {
-          badge.className = 'text-[10px] text-emerald-400 font-mono font-bold';
+          badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500 text-black font-bold';
           badge.innerText = 'Done ✓';
         }
-        if (statusInfo) {
-          const sub = document.getElementById(`agent-sub-${ag}`);
-          if (sub) sub.innerText = statusInfo.summary;
+        if (info) {
+          const desc = document.getElementById(`status-desc-${ag}`);
+          if (desc) desc.innerText = info.summary;
         }
       }
     }
 
-    function resetExecution() {
-      const agents = ['categorizer', 'analyzer', 'forecaster', 'advisor'];
-      agents.forEach((ag, idx) => {
-        const node = document.getElementById(`agent-node-${ag}`);
-        if (node) {
-          node.className = 'p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 transition-all duration-300 flex items-center gap-2.5';
-          const icon = document.getElementById(`agent-icon-${ag}`);
-          if (icon) {
-            icon.className = 'h-8 w-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-xs border border-slate-700';
-            icon.innerText = idx + 1;
-          }
-          const badge = document.getElementById(`agent-badge-${ag}`);
+    function resetAgentCards() {
+      ['categorizer', 'analyzer', 'forecaster', 'advisor'].forEach(ag => {
+        const card = document.getElementById(`card-agent-${ag}`);
+        if (card) {
+          card.className = 'glass-card p-4 rounded-2xl border border-slate-800 transition duration-300 space-y-2';
+          const badge = document.getElementById(`status-badge-${ag}`);
           if (badge) {
-            badge.className = 'text-[10px] text-slate-500 font-mono';
+            badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400';
             badge.innerText = 'Idle';
           }
         }
       });
-      appendTerminalLog('Pipeline states reset.', 'info');
     }
 
-    function pauseExecution() {
-      isPaused = !isPaused;
-      document.getElementById('pauseBtn').innerText = isPaused ? 'Resume' : 'Pause';
-      appendTerminalLog(isPaused ? 'Pipeline paused.' : 'Pipeline resumed.', 'warn');
-    }
-
-    function nextStepExecution() {
-      appendTerminalLog('Stepped to next agent execution.', 'info');
-      startExecution();
-    }
-
-    function setSpeed(s) {
-      execSpeed = s;
-      document.getElementById('speed1xBtn').className = s === 1 ? 'px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold' : 'px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
-      document.getElementById('speed2xBtn').className = s === 2 ? 'px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold' : 'px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
-    }
-
-    function setMode(m) {
-      execMode = m;
-      document.getElementById('modeAutoBtn').className = m === 'auto' ? 'px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold' : 'px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
-      document.getElementById('modeStepBtn').className = m === 'step' ? 'px-1.5 py-0.5 rounded bg-emerald-500 text-black font-bold' : 'px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
-    }
-
-    function skipToResult() {
-      startExecution();
-      switchTab('tab-trajectory');
-    }
-
-    // Render Grounded Action Cards (Matching Image 3)
     function renderRecommendations(recs) {
-      const container = document.getElementById('recommendationsStream');
+      const container = document.getElementById('recommendationsContainer');
       if (!recs || recs.length === 0) {
-        container.innerHTML = '<div class="col-span-2 text-xs text-slate-400">No active recommendations.</div>';
+        container.innerHTML = '<div class="col-span-4 text-xs text-slate-400">No active recommendations.</div>';
         return;
       }
 
-      container.innerHTML = recs.map((r, i) => `
-        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 transition flex flex-col justify-between space-y-2.5">
+      container.innerHTML = recs.map(r => `
+        <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition flex flex-col justify-between space-y-3">
           <div>
             <div class="flex items-start justify-between gap-2">
-              <span class="text-xs font-bold text-white leading-tight">${r.title}</span>
-              <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 whitespace-nowrap">
+              <span class="text-xs font-bold text-white line-clamp-1">${r.title}</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">
                 saves ₹${Math.round(r.projected_monthly_savings || 1400).toLocaleString()}/mo
               </span>
             </div>
-            <p class="text-[11px] text-slate-300 mt-1 line-clamp-2">${r.action}</p>
+            <p class="text-xs text-slate-300 mt-1 line-clamp-2">${r.action}</p>
           </div>
 
-          <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-            <!-- Toggle Accept Switch -->
-            <div class="flex items-center gap-2">
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" checked class="sr-only switch-checkbox" onchange="toggleRecAccept('${r.id}', this.checked)" />
-                <div class="switch-label w-9 h-5 bg-slate-700 rounded-full transition-colors flex items-center px-0.5">
-                  <div class="switch-dot w-4 h-4 bg-white rounded-full transition-transform"></div>
-                </div>
-              </label>
-              <span class="text-[11px] text-slate-300 font-medium">Accept</span>
-            </div>
-
-            <!-- Why Button -->
-            <button onclick="openDecisionModal('${r.id}')" class="text-[11px] text-slate-400 hover:text-emerald-400 font-medium flex items-center gap-1 transition">
-              <i class="ph-bold ph-question"></i> Why?
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <button onclick="openDecisionModal('${r.id}')" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 transition">
+              <i class="ph-bold ph-shield-check"></i> Decision Trail
             </button>
+            <span class="text-[10px] text-slate-500 uppercase font-mono">${r.priority}</span>
           </div>
         </div>
       `).join('');
 
-      document.getElementById('recsCountBadge').innerText = `${recs.length} actions ready`;
-    }
-
-    function toggleRecAccept(id, accepted) {
-      appendTerminalLog(`Recommendation ${id} ${accepted ? 'Accepted' : 'Skipped'}. Trajectory adapting...`, 'info', 'Audited');
+      document.getElementById('recsSummaryBadge').innerText = `${recs.length} actions ready`;
     }
 
     function openDecisionModal(id) {
@@ -1279,12 +1030,12 @@
       if (!r) return;
 
       document.getElementById('modalRecTitle').innerText = r.title;
-      document.getElementById('modalRecCategory').innerText = r.category || 'Discretionary Lifestyle';
+      document.getElementById('modalRecCategory').innerText = r.category || 'Discretionary';
       document.getElementById('modalRecAction').innerText = r.action;
       document.getElementById('modalRecMonthly').innerText = `+₹${Math.round(r.projected_monthly_savings || 0).toLocaleString()}/mo`;
       document.getElementById('modalRecAnnual').innerText = `+₹${Math.round(r.projected_annual_savings || 0).toLocaleString()}/yr`;
-      document.getElementById('modalRecTrail').innerText = r.reasoning_trail || 'Derived from behavioral anomalies and 90-day cashflow buffer risk verification.';
-      document.getElementById('modalRecTrigger').innerText = r.trigger_type || 'ANOMALY_VELOCITY';
+      document.getElementById('modalRecTrail').innerText = r.reasoning_trail || 'Derived from behavioral pattern detection & 90-day cashflow runway protection.';
+      document.getElementById('modalRecTrigger').innerText = r.trigger_type || 'ANOMALY_DETECTION';
       document.getElementById('modalRecConfidence').innerText = `Confidence: ${Math.round((r.confidence_score || 0.95)*100)}%`;
 
       document.getElementById('decisionTrailModal').classList.remove('hidden');
@@ -1294,7 +1045,6 @@
       document.getElementById('decisionTrailModal').classList.add('hidden');
     }
 
-    // Render Anomalies
     function renderAnomalies(anomalies) {
       const container = document.getElementById('anomaliesGrid');
       if (!anomalies || anomalies.length === 0) {
@@ -1321,11 +1071,11 @@
       document.getElementById('anomaliesCountBadge').innerText = `${anomalies.length} Detected`;
     }
 
-    // Tab Switching
+    // Switch Tabs
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(b => {
-        b.className = 'tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5';
+        b.className = 'tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium transition flex items-center gap-1.5';
       });
 
       const activeTab = document.getElementById(tabId);
@@ -1333,11 +1083,11 @@
 
       const activeBtn = document.getElementById(`btn-${tabId}`);
       if (activeBtn) {
-        activeBtn.className = 'tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold transition flex items-center gap-1.5';
+        activeBtn.className = 'tab-btn px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-bold transition flex items-center gap-1.5';
       }
     }
 
-    // What-If Simulation
+    // What-If Simulator
     function setSimPreset(name, type, amount) {
       document.getElementById('simName').value = name;
       document.getElementById('simType').value = type;
@@ -1353,7 +1103,7 @@
         month_offset: 1
       };
 
-      appendTerminalLog(`Simulating counterfactual decision: ${scenario.name} (₹${scenario.amount})...`, 'llm', 'Simulation');
+      appendTerminalLog(`Simulating decision: "${scenario.name}" (₹${scenario.amount})...`, 'llm', 'Simulation');
 
       try {
         const res = await fetch('/api/simulate', {
@@ -1363,7 +1113,6 @@
         });
         const simRes = await res.json();
 
-        // Update Verdict
         const badge = document.getElementById('simVerdictBadge');
         const text = document.getElementById('simVerdictText');
         if (simRes.is_affordable) {
@@ -1375,18 +1124,17 @@
         }
         text.innerText = simRes.trade_off_analysis || simRes.decision_verdict || 'Simulation completed.';
 
-        // Re-render chart with simulation curve
         if (globalForecast && simRes.simulated_trajectory) {
           initChart(globalForecast.trajectory_points || [], simRes.simulated_trajectory);
         }
 
-        appendTerminalLog(`Simulation completed: Verdict = ${simRes.is_affordable ? 'AFFORDABLE' : 'RISK ALERT'}`, 'info', 'Verdict');
+        appendTerminalLog(`Verdict: ${simRes.is_affordable ? 'AFFORDABLE' : 'RISK ALERT'}`, 'info', 'Verdict');
       } catch (e) {
-        console.error("Simulation error: ", e);
+        console.error(e);
       }
     }
 
-    // Copilot Chat
+    // Copilot
     async function sendCopilotQuery() {
       const inp = document.getElementById('copilotInput');
       const query = inp.value.trim();
@@ -1428,88 +1176,57 @@
       sendCopilotQuery();
     }
 
-    // Proactive Digest Trigger
+    // Trigger digest
     async function triggerDigestNow() {
-      appendTerminalLog('Triggering proactive digest dispatch via APScheduler...', 'info', 'APScheduler');
       try {
         const res = await fetch('/api/digest/latest');
         const data = await res.json();
-        if (data.key_insight) {
-          document.getElementById('digestMainInsight').innerText = data.key_insight;
-        }
-        if (data.recommended_action) {
-          document.getElementById('digestActionText').innerText = data.recommended_action;
-        }
-        appendTerminalLog('Proactive digest dispatched to subscriber channels.', 'llm', 'Delivered');
+        if (data.key_insight) document.getElementById('digestMainInsight').innerText = data.key_insight;
+        if (data.recommended_action) document.getElementById('digestActionText').innerText = data.recommended_action;
+        appendTerminalLog('Proactive digest dispatched successfully.', 'llm', 'Delivered');
       } catch (e) {
         console.error(e);
       }
     }
 
-    // Upload custom CSV
-    async function handleCsvUpload(input) {
-      if (!input.files || input.files.length === 0) return;
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-
-      appendTerminalLog(`Uploading custom CSV: ${file.name}...`, 'info');
-
-      try {
-        const res = await fetch('/api/transactions/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-        document.getElementById('activeFileName').innerText = file.name;
-        document.getElementById('activeFileRows').innerText = `${data.count} rows`;
-        appendTerminalLog(`Successfully uploaded ${data.count} rows. Ready to run FinPilot.`, 'llm', 'Uploaded');
-      } catch (e) {
-        appendTerminalLog(`Upload failed: ${e}`, 'warn');
-      }
+    // Terminal toggle & logging
+    function toggleTerminal() {
+      terminalOpen = !terminalOpen;
+      const el = document.getElementById('agentTerminalWrapper');
+      el.classList.toggle('hidden', !terminalOpen);
+      document.getElementById('terminalBtnText').innerText = terminalOpen ? 'Hide Agent Telemetry Log' : 'Show Agent Telemetry Log';
     }
 
-    function downloadSampleCsv() {
-      const csvContent = "data:text/csv;charset=utf-8,date,amount,merchant,description\n2026-08-01,-115000.00,TechCorp India Payroll,Direct Deposit Salary\n2026-08-01,28000.00,Prestige Estates Rent,Apartment Monthly Rent\n2026-08-07,2499.00,Cult.fit,Monthly All-Access Cultpass Gym\n2026-08-11,850.00,Swiggy,Biryani dinner delivery";
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "finpilot_sample_template.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    function appendTerminalLog(message, type = 'info', badge = null) {
+      const term = document.getElementById('terminalLogBody');
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'flex items-start justify-between gap-2 py-0.5';
+
+      let msgColor = 'text-slate-300';
+      if (type === 'llm') msgColor = 'text-emerald-300 font-semibold';
+      if (type === 'warn') msgColor = 'text-amber-300';
+
+      div.innerHTML = `
+        <div class="flex-1">
+          <span class="text-slate-500">[${time}]</span> <span class="${msgColor}">${message}</span>
+        </div>
+        ${badge ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700 whitespace-nowrap font-mono">${badge}</span>` : ''}
+      `;
+      term.appendChild(div);
+      term.scrollTop = term.scrollHeight;
     }
 
-    function showNodeDetail(nodeId) {
-      const descriptions = {
-        'transactions': '1. Ingestion Layer: Accepts bank CSVs or manual logs, normalizes timestamps, currency (INR), and merchant strings.',
-        'categorizer': '2. Categorization Agent: Classifies spends into 5 macro groups with cadence detection via rule-based heuristics & Mesh API LLM.',
-        'db': '3. SQLite Database: Central transactional data store managed via SQLAlchemy ORM, storing classified rows and financial goals.',
-        'analyzer': '4. Behavior & Anomaly Agent: Runs longitudinal aggregations detecting ghost subscriptions, velocity surges, and weekend clusters.',
-        'forecaster': '5. Forecasting Agent: Projects 90-day daily cashflow balance taking into account recurring fixed costs and variable burn rate.',
-        'advisor': '6. Advisor Agent: Synthesizes patterns into grounded, actionable recommendations with an auditable decision trail.',
-        'recs': '7. Recommendations UI: Interactive cards allowing users to accept or skip recommendations and inspect mathematical proof.',
-        'whatif': '8. What-If Question: User query testing a planned outlay (e.g. ₹35k Goa trip or ₹14k Car EMI) before committing.',
-        'simulator': '9. What-If Simulator Engine: Replays the 90-day stochastic projection with counterfactual shocks applied.',
-        'verdict': '10. Verdict: Outputs plain-language decision verdict (AFFORDABLE, BUFFER BREACH RISK, or TRADE-OFF REQUIRED).',
-        'scheduler': '11. APScheduler: Python background service managing proactive weekly triggers without manual button presses.',
-        'digest': '12. Proactive Digest: Dispatches a weekly summary via Telegram or Email with the top insight and one action.',
-        'audit': '13. Audit Log: Verifiable log mapping each tip to its underlying transaction evidence and trigger pattern.'
-      };
-
-      const box = document.getElementById('nodeDetailBox');
-      if (box && descriptions[nodeId]) {
-        box.innerHTML = `<span class="text-emerald-400 font-bold">${nodeId.toUpperCase()}:</span> ${descriptions[nodeId]}`;
-      }
+    function scrollToStep(stepId) {
+      const el = document.getElementById(stepId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Auto-initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
-      selectPersona('aarav');
       initChart([
         { date: '2026-10-01', balance: 75000 },
         { date: '2026-10-15', balance: 145000 },
@@ -1519,6 +1236,7 @@
         { date: '2026-12-15', balance: 440000 },
         { date: '2026-12-31', balance: 520000 }
       ]);
+      loadSampleData();
     });
   </script>
 </body>
